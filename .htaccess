@@ -1,0 +1,81 @@
+# ============================================================================
+# SkillSwap - Apache Rewrite Rules
+# ============================================================================
+#
+# Enables pretty URLs and routes all requests to index.php
+# 
+# @author     B.Sc Computer Science Student
+# @project    SkillSwap - Digital Skill Marketplace
+# @year       Final Year Project
+# ============================================================================
+
+# Enable rewrite engine
+RewriteEngine On
+
+# Set base directory (change if not in root)
+RewriteBase /skillswap/
+
+# Prevent directory listing
+Options -Indexes
+
+# Protect sensitive files
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Deny access to important files
+<FilesMatch "(^#.*#|\.(bak|config|dist|fla|inc|ini|log|psd|sh|sql|sw[op])|~)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Disable server signature
+ServerSignature Off
+
+# PHP settings (if mod_php is used)
+php_value upload_max_filesize 2M
+php_value post_max_size 2M
+php_value max_execution_time 300
+php_value max_input_time 300
+
+# ----------------------------------------------------------------------
+# Rewrite Rules
+# ----------------------------------------------------------------------
+
+# If the request is for an existing file or directory, serve it directly
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Redirect all other requests to index.php
+RewriteRule ^(.*)$ index.php [QSA,L]
+
+# ----------------------------------------------------------------------
+# Security Headers (if mod_headers is enabled)
+# ----------------------------------------------------------------------
+<IfModule mod_headers.c>
+    Header set X-Frame-Options "DENY"
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-XSS-Protection "1; mode=block"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# ----------------------------------------------------------------------
+# Compression (if mod_deflate is enabled)
+# ----------------------------------------------------------------------
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/css application/javascript application/json
+</IfModule>
+
+# ----------------------------------------------------------------------
+# Caching (if mod_expires is enabled)
+# ----------------------------------------------------------------------
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/jpeg "access plus 1 month"
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType image/gif "access plus 1 month"
+    ExpiresByType text/css "access plus 1 week"
+    ExpiresByType application/javascript "access plus 1 week"
+</IfModule>

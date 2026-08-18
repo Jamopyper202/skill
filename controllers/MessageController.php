@@ -64,7 +64,7 @@ class MessageController
 
         // Get recent conversations
         $conversations = $this->messageModel->getRecentConversations($userId);
-
+  
         // Mark all as read when viewing inbox
         // (Individual conversation unread counts are handled separately)
 
@@ -104,6 +104,9 @@ class MessageController
 
         // Mark messages from other user as read
         $this->messageModel->markAsRead($otherUserId, $userId);
+
+        $conversations = $this->messageModel->getRecentConversations($userId);
+
 
         // Get last message ID for AJAX polling
         $lastMessageId = 0;

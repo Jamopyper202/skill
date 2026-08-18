@@ -89,9 +89,6 @@ class DashboardController
         // Get profile statistics
         $stats = $this->profileModel->getStats($userId);
 
-        // var_dump($userId);
-        // var_dump($stats);
-        // exit;
 
         // Get top matches
         $topMatches = $this->matchModel->getTopMatches($userId, MATCH_THRESHOLD, 5);

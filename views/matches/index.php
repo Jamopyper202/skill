@@ -138,15 +138,22 @@ require_once BASE_PATH . '/views/layouts/header.php';
                 </div>
             <?php endforeach; ?>
         </div>
+        <?php
+        // Pagination
+        $currentPage = max(1, (int) ($_GET['page'] ?? 1));
+        $status = is_string($status ?? null) ? $status : '';
+        $totalPages = (int) ($totalPages ?? 1);
 
-        <!-- Pagination -->
-        $baseUrl = url('Match', 'index')
-        . ($status ? '&status=' . urlencode($status) : '');
+        $baseUrl = url('Match', 'index');
+
+        if ($status !== '') {
+            $baseUrl .= '&status=' . urlencode($status);
+        }
 
         echo pagination(
-        (int)($_GET['page'] ?? 1),
-        (int)$totalPages,
-        $baseUrl
+            $currentPage,
+            $totalPages,
+            $baseUrl
         );
         ?>
     <?php endif; ?>

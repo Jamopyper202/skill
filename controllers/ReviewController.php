@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ============================================================================
  * Review Controller
@@ -13,7 +14,8 @@
  * ============================================================================
  */
 
-class ReviewController {
+class ReviewController
+{
     /**
      * Review model instance
      * @var Review
@@ -41,7 +43,8 @@ class ReviewController {
     /**
      * Constructor
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->reviewModel = new Review();
         $this->exchangeModel = new Exchange();
         $this->userModel = new User();
@@ -55,7 +58,8 @@ class ReviewController {
      * 
      * Display reviews received by the logged-in user.
      */
-    public function index(): void {
+    public function index(): void
+    {
         $userId = getCurrentUserId();
 
         $page = (int) ($_GET['page'] ?? 1);
@@ -67,7 +71,7 @@ class ReviewController {
 
         // Get total count
         $total = $this->reviewModel->countForUser($userId);
-        $totalPages = ceil($total / $limit);
+        $totalPages = (int) ceil($total / $limit);
 
         // Get average rating
         $avgRating = $this->reviewModel->getAverageRating($userId);
@@ -86,9 +90,14 @@ class ReviewController {
      * 
      * Display and handle review creation form.
      */
-    public function create(): void {
+    public function create(): void
+    {
         $userId = getCurrentUserId();
-        $exchangeId = (int) ($_GET['exchange_id'] ?? 0);
+        $exchangeId = (int) (
+            $_GET['exchange_id']
+            ?? $_POST['exchange_id']
+            ?? 0
+        );
 
         if ($exchangeId === 0) {
             flash('Invalid exchange.', 'danger');
@@ -166,7 +175,8 @@ class ReviewController {
      * 
      * View a specific review.
      */
-    public function view(): void {
+    public function view(): void
+    {
         $reviewId = (int) ($_GET['id'] ?? 0);
 
         $review = $this->reviewModel->getById($reviewId);
@@ -188,13 +198,14 @@ class ReviewController {
      * 
      * Edit an existing review (within 24 hours).
      */
-    public function edit(): void {
+    public function edit(): void
+    {
         $userId = getCurrentUserId();
         $reviewId = (int) ($_GET['id'] ?? 0);
 
         $review = $this->reviewModel->getById($reviewId);
 
-        if (!$review || $review['reviewer_id'] != $userId) {
+        if (!$review || (int)$review['reviewer_id'] !== $userId) {
             flash('Review not found or you do not have permission.', 'danger');
             redirect(url('Review', 'index'));
             return;
@@ -245,7 +256,8 @@ class ReviewController {
      * 
      * Delete a review written by the current user.
      */
-    public function delete(): void {
+    public function delete(): void
+    {
         $userId = getCurrentUserId();
         $reviewId = (int) ($_GET['id'] ?? 0);
 
@@ -258,4 +270,3 @@ class ReviewController {
         redirect(url('Review', 'index'));
     }
 }
-?>

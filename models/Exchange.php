@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ============================================================================
  * Exchange Model
@@ -13,7 +14,8 @@
  * ============================================================================
  */
 
-class Exchange {
+class Exchange
+{
     /**
      * Database connection instance
      * @var PDO
@@ -23,7 +25,8 @@ class Exchange {
     /**
      * Constructor - initialize database connection
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->db = Database::getConnection();
     }
 
@@ -42,7 +45,8 @@ class Exchange {
      * @param string $message          Optional message with the request
      * @return int|false               New exchange request ID or false
      */
-    public function create(int $matchId, int $requesterId, int $receiverId, int $offeredSkillId, int $requestedSkillId, string $message = ''): int|false {
+    public function create(int $matchId, int $requesterId, int $receiverId, int $offeredSkillId, int $requestedSkillId, string $message = ''): int|false
+    {
         try {
             $stmt = $this->db->prepare("
                 INSERT INTO exchange_requests 
@@ -56,12 +60,11 @@ class Exchange {
                 ':requester_id'      => $requesterId,
                 ':receiver_id'       => $receiverId,
                 ':offered_skill_id'  => $offeredSkillId,
-                ':requested_skill_id'=> $requestedSkillId,
+                ':requested_skill_id' => $requestedSkillId,
                 ':message'           => $message
             ]);
 
             return (int) $this->db->lastInsertId();
-
         } catch (PDOException $e) {
             error_log("Create Exchange Error: " . $e->getMessage());
             return false;
@@ -78,7 +81,8 @@ class Exchange {
      * @param int $exchangeId  Exchange request ID
      * @return array|false
      */
-    public function getById(int $exchangeId): array|false {
+    public function getById(int $exchangeId): array|false
+    {
         try {
             $stmt = $this->db->prepare("
                 SELECT er.*,
@@ -107,7 +111,6 @@ class Exchange {
 
             $stmt->execute([':id' => $exchangeId]);
             return $stmt->fetch();
-
         } catch (PDOException $e) {
             error_log("Get Exchange By ID Error: " . $e->getMessage());
             return false;
@@ -126,9 +129,9 @@ class Exchange {
      * @return array|false
      */
     public function getForUser(int $exchangeId, int $userId): array|false
-{
-    try {
-        $sql = "
+    {
+        try {
+            $sql = "
             SELECT
                 er.*,
 
@@ -170,23 +173,22 @@ class Exchange {
             LIMIT 1
         ";
 
-        $stmt = $this->db->prepare($sql);
+            $stmt = $this->db->prepare($sql);
 
-        $stmt->execute([
-            $exchangeId,
-            $userId,
-            $userId
-        ]);
+            $stmt->execute([
+                $exchangeId,
+                $userId,
+                $userId
+            ]);
 
-        $exchange = $stmt->fetch();
+            $exchange = $stmt->fetch();
 
-        return $exchange ?: false;
-
-    } catch (PDOException $e) {
-        error_log("Get Exchange Error: " . $e->getMessage());
-        return false;
+            return $exchange ?: false;
+        } catch (PDOException $e) {
+            error_log("Get Exchange Error: " . $e->getMessage());
+            return false;
+        }
     }
-}
 
     /**
      * =========================================================================
@@ -201,65 +203,16 @@ class Exchange {
      * @param int    $offset  Pagination offset
      * @return array
      */
-    // public function getUserExchanges(int $userId, string $status = '', int $limit = 10, int $offset = 0): array {
-    //     try {
-    //         $sql = "
-    //             SELECT er.*,
-    //                 req.full_name as requester_name,
-    //                 rec.full_name as receiver_name,
-    //                 req_p.profile_picture as requester_picture,
-    //                 rec_p.profile_picture as receiver_picture,
-    //                 os.name as offered_skill_name,
-    //                 rs.name as requested_skill_name,
-    //                 CASE 
-    //                     WHEN er.requester_id = :user_id THEN 'sent'
-    //                     ELSE 'received'
-    //                 END as direction
-    //             FROM exchange_requests er
-    //             JOIN users req ON er.requester_id = req.id
-    //             JOIN users rec ON er.receiver_id = rec.id
-    //             LEFT JOIN profiles req_p ON req.id = req_p.user_id
-    //             LEFT JOIN profiles rec_p ON rec.id = rec_p.user_id
-    //             JOIN skills os ON er.offered_skill_id = os.id
-    //             JOIN skills rs ON er.requested_skill_id = rs.id
-    //             WHERE er.requester_id = :user_id OR er.receiver_id = :user_id
-    //         ";
 
-    //         $params = [':user_id' => $userId];
-
-    //         if (!empty($status)) {
-    //             $sql .= " AND er.status = :status";
-    //             $params[':status'] = $status;
-    //         }
-
-    //         $sql .= " ORDER BY er.created_at DESC LIMIT :limit OFFSET :offset";
-
-    //         $stmt = $this->db->prepare($sql);
-
-    //         foreach ($params as $key => $value) {
-    //             $stmt->bindValue($key, $value);
-    //         }
-
-    //         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
-    //         $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
-
-    //         $stmt->execute();
-    //         return $stmt->fetchAll();
-
-    //     } catch (PDOException $e) {
-    //         error_log("Get User Exchanges Error: " . $e->getMessage());
-    //         return [];
-    //     }
-    // }
     public function getUserExchanges(
-    int $userId,
-    string $status = '',
-    int $limit = 10,
-    int $offset = 0
-): array {
-    try {
+        int $userId,
+        string $status = '',
+        int $limit = 10,
+        int $offset = 0
+    ): array {
+        try {
 
-        $sql = "
+            $sql = "
             SELECT
                 er.*,
 
@@ -318,7 +271,7 @@ class Exchange {
             )
         ";
 
-        /*
+            /*
          * Parameters for the six ? placeholders above:
          *
          * 1. direction
@@ -328,70 +281,69 @@ class Exchange {
          * 5. requester condition
          * 6. receiver condition
          */
-        $params = [
-            $userId,
-            $userId,
-            $userId,
-            $userId,
-            $userId,
-            $userId
-        ];
+            $params = [
+                $userId,
+                $userId,
+                $userId,
+                $userId,
+                $userId,
+                $userId
+            ];
 
-        /*
+            /*
          * Optional status filter
          */
-        if (!empty($status)) {
-            $sql .= " AND er.status = ?";
-            $params[] = $status;
-        }
+            if (!empty($status)) {
+                $sql .= " AND er.status = ?";
+                $params[] = $status;
+            }
 
-        $sql .= "
+            $sql .= "
             ORDER BY er.created_at DESC
             LIMIT ? OFFSET ?
         ";
 
-        $params[] = $limit;
-        $params[] = $offset;
+            $params[] = $limit;
+            $params[] = $offset;
 
-        $stmt = $this->db->prepare($sql);
+            $stmt = $this->db->prepare($sql);
 
-        /*
+            /*
          * Bind normal parameters
          */
-        foreach ($params as $index => $value) {
+            foreach ($params as $index => $value) {
 
-            $parameterNumber = $index + 1;
+                $parameterNumber = $index + 1;
 
-            if (
-                $parameterNumber === count($params) - 1 ||
-                $parameterNumber === count($params)
-            ) {
-                $stmt->bindValue(
-                    $parameterNumber,
-                    (int)$value,
-                    PDO::PARAM_INT
-                );
-            } else {
-                $stmt->bindValue(
-                    $parameterNumber,
-                    $value
-                );
+                if (
+                    $parameterNumber === count($params) - 1 ||
+                    $parameterNumber === count($params)
+                ) {
+                    $stmt->bindValue(
+                        $parameterNumber,
+                        (int)$value,
+                        PDO::PARAM_INT
+                    );
+                } else {
+                    $stmt->bindValue(
+                        $parameterNumber,
+                        $value
+                    );
+                }
             }
+
+            $stmt->execute();
+
+            return $stmt->fetchAll();
+        } catch (PDOException $e) {
+
+            error_log(
+                "Get User Exchanges Error: " . $e->getMessage()
+            );
+
+            return [];
         }
-
-        $stmt->execute();
-
-        return $stmt->fetchAll();
-
-    } catch (PDOException $e) {
-
-        error_log(
-            "Get User Exchanges Error: " . $e->getMessage()
-        );
-
-        return [];
     }
-}
 
     /**
      * =========================================================================
@@ -404,7 +356,8 @@ class Exchange {
      * @param int $limit   Results limit
      * @return array
      */
-    public function getPendingReceived(int $userId, int $limit = 5): array {
+    public function getPendingReceived(int $userId, int $limit = 5): array
+    {
         try {
             $stmt = $this->db->prepare("
                 SELECT er.*,
@@ -427,7 +380,6 @@ class Exchange {
             $stmt->execute();
 
             return $stmt->fetchAll();
-
         } catch (PDOException $e) {
             error_log("Get Pending Received Error: " . $e->getMessage());
             return [];
@@ -445,7 +397,8 @@ class Exchange {
      * @param string $status      New status
      * @return bool
      */
-    public function updateStatus(int $exchangeId, string $status): bool {
+    public function updateStatus(int $exchangeId, string $status): bool
+    {
         try {
             $stmt = $this->db->prepare("
                 UPDATE exchange_requests 
@@ -458,7 +411,6 @@ class Exchange {
                 ':status' => $status,
                 ':id'     => $exchangeId
             ]);
-
         } catch (PDOException $e) {
             error_log("Update Exchange Status Error: " . $e->getMessage());
             return false;
@@ -475,7 +427,8 @@ class Exchange {
      * @param int $exchangeId  Exchange ID
      * @return bool
      */
-    public function accept(int $exchangeId): bool {
+    public function accept(int $exchangeId): bool
+    {
         try {
             $stmt = $this->db->prepare("
                 UPDATE exchange_requests 
@@ -486,7 +439,6 @@ class Exchange {
             ");
 
             return $stmt->execute([':id' => $exchangeId]);
-
         } catch (PDOException $e) {
             error_log("Accept Exchange Error: " . $e->getMessage());
             return false;
@@ -503,7 +455,8 @@ class Exchange {
      * @param int $exchangeId  Exchange ID
      * @return bool
      */
-    public function reject(int $exchangeId): bool {
+    public function reject(int $exchangeId): bool
+    {
         try {
             $stmt = $this->db->prepare("
                 UPDATE exchange_requests 
@@ -513,7 +466,6 @@ class Exchange {
             ");
 
             return $stmt->execute([':id' => $exchangeId]);
-
         } catch (PDOException $e) {
             error_log("Reject Exchange Error: " . $e->getMessage());
             return false;
@@ -530,7 +482,8 @@ class Exchange {
      * @param int $exchangeId  Exchange ID
      * @return bool
      */
-    public function start(int $exchangeId): bool {
+    public function start(int $exchangeId): bool
+    {
         try {
             $stmt = $this->db->prepare("
                 UPDATE exchange_requests 
@@ -540,7 +493,6 @@ class Exchange {
             ");
 
             return $stmt->execute([':id' => $exchangeId]);
-
         } catch (PDOException $e) {
             error_log("Start Exchange Error: " . $e->getMessage());
             return false;
@@ -557,7 +509,8 @@ class Exchange {
      * @param int $exchangeId  Exchange ID
      * @return bool
      */
-    public function complete(int $exchangeId): bool {
+    public function complete(int $exchangeId): bool
+    {
         try {
             $stmt = $this->db->prepare("
                 UPDATE exchange_requests 
@@ -568,7 +521,6 @@ class Exchange {
             ");
 
             return $stmt->execute([':id' => $exchangeId]);
-
         } catch (PDOException $e) {
             error_log("Complete Exchange Error: " . $e->getMessage());
             return false;
@@ -585,7 +537,8 @@ class Exchange {
      * @param int $exchangeId  Exchange ID
      * @return bool
      */
-    public function cancel(int $exchangeId): bool {
+    public function cancel(int $exchangeId): bool
+    {
         try {
             $stmt = $this->db->prepare("
                 UPDATE exchange_requests 
@@ -595,7 +548,6 @@ class Exchange {
             ");
 
             return $stmt->execute([':id' => $exchangeId]);
-
         } catch (PDOException $e) {
             error_log("Cancel Exchange Error: " . $e->getMessage());
             return false;
@@ -613,7 +565,8 @@ class Exchange {
      * @param int $limit   Results limit
      * @return array
      */
-    public function getHistory(int $userId, int $limit = 20): array {
+    public function getHistory(int $userId, int $limit = 20): array
+    {
         try {
             $stmt = $this->db->prepare("
                 SELECT er.*,
@@ -642,7 +595,6 @@ class Exchange {
             $stmt->execute();
 
             return $stmt->fetchAll();
-
         } catch (PDOException $e) {
             error_log("Get Exchange History Error: " . $e->getMessage());
             return [];
@@ -660,7 +612,8 @@ class Exchange {
      * @param string $status  Filter by status
      * @return int
      */
-    public function countUserExchanges(int $userId, string $status = ''): int {
+    public function countUserExchanges(int $userId, string $status = ''): int
+    {
         try {
             $sql = "
                 SELECT COUNT(*) as total 
@@ -678,7 +631,6 @@ class Exchange {
             $stmt->execute($params);
             $result = $stmt->fetch();
             return (int) $result['total'];
-
         } catch (PDOException $e) {
             error_log("Count User Exchanges Error: " . $e->getMessage());
             return 0;
@@ -696,7 +648,8 @@ class Exchange {
      * @param int $userId2  Second user ID
      * @return bool
      */
-    public function hasActiveExchange(int $userId1, int $userId2): bool {
+    public function hasActiveExchange(int $userId1, int $userId2): bool
+    {
         try {
             $stmt = $this->db->prepare("
                 SELECT COUNT(*) as total 
@@ -713,7 +666,6 @@ class Exchange {
 
             $result = $stmt->fetch();
             return $result['total'] > 0;
-
         } catch (PDOException $e) {
             error_log("Has Active Exchange Error: " . $e->getMessage());
             return false;
@@ -730,46 +682,146 @@ class Exchange {
      * @param int $userId  User ID
      * @return array
      */
-    public function getStats(int $userId): array {
+    public function getStats(int $userId): array
+    {
         try {
-            $stats = [];
 
-            // Total exchanges
+            // Total exchange statistics
             $stmt = $this->db->prepare("
-                SELECT COUNT(*) as total,
-                    SUM(CASE WHEN status = 'completed' THEN 1 ELSE 0 END) as completed,
-                    SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) as pending,
-                    SUM(CASE WHEN status = 'accepted' THEN 1 ELSE 0 END) as accepted,
-                    SUM(CASE WHEN status = 'in_progress' THEN 1 ELSE 0 END) as in_progress,
-                    SUM(CASE WHEN status = 'declined' THEN 1 ELSE 0 END) as declined
-                FROM exchange_requests 
-                WHERE requester_id = :user_id OR receiver_id = :user_id
-            ");
-            $stmt->execute([':user_id' => $userId]);
-            $stats = $stmt->fetch();
+            SELECT
+                COUNT(*) AS total,
 
-            // Exchanges as teacher (offered skill)
-            $stmt = $this->db->prepare("
-                SELECT COUNT(*) as total FROM exchange_requests 
-                WHERE requester_id = :user_id AND status = 'completed'
-            ");
-            $stmt->execute([':user_id' => $userId]);
-            $stats['as_teacher'] = (int) $stmt->fetch()['total'];
+                SUM(
+                    CASE
+                        WHEN status = 'completed'
+                        THEN 1
+                        ELSE 0
+                    END
+                ) AS completed,
 
-            // Exchanges as learner (requested skill)
+                SUM(
+                    CASE
+                        WHEN status = 'pending'
+                        THEN 1
+                        ELSE 0
+                    END
+                ) AS pending,
+
+                SUM(
+                    CASE
+                        WHEN status = 'accepted'
+                        THEN 1
+                        ELSE 0
+                    END
+                ) AS accepted,
+
+                SUM(
+                    CASE
+                        WHEN status = 'in_progress'
+                        THEN 1
+                        ELSE 0
+                    END
+                ) AS in_progress,
+
+                SUM(
+                    CASE
+                        WHEN status = 'declined'
+                        THEN 1
+                        ELSE 0
+                    END
+                ) AS declined
+
+            FROM exchange_requests
+
+            WHERE requester_id = :requester_id
+               OR receiver_id = :receiver_id
+        ");
+
+            $stmt->execute([
+                ':requester_id' => $userId,
+                ':receiver_id' => $userId
+            ]);
+
+            $stats = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if (!$stats) {
+                $stats = [];
+            }
+
+            // Exchanges as teacher
             $stmt = $this->db->prepare("
-                SELECT COUNT(*) as total FROM exchange_requests 
-                WHERE receiver_id = :user_id AND status = 'completed'
-            ");
-            $stmt->execute([':user_id' => $userId]);
-            $stats['as_learner'] = (int) $stmt->fetch()['total'];
+            SELECT COUNT(*) AS total
+            FROM exchange_requests
+            WHERE requester_id = :user_id
+              AND status = 'completed'
+        ");
+
+            $stmt->execute([
+                ':user_id' => $userId
+            ]);
+
+            $teacherResult = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            $stats['as_teacher'] =
+                (int) ($teacherResult['total'] ?? 0);
+
+
+            // Exchanges as learner
+            $stmt = $this->db->prepare("
+            SELECT COUNT(*) AS total
+            FROM exchange_requests
+            WHERE receiver_id = :user_id
+              AND status = 'completed'
+        ");
+
+            $stmt->execute([
+                ':user_id' => $userId
+            ]);
+
+            $learnerResult = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            $stats['as_learner'] =
+                (int) ($learnerResult['total'] ?? 0);
+
+
+            // Convert statistics to integers
+            $stats['total'] =
+                (int) ($stats['total'] ?? 0);
+
+            $stats['completed'] =
+                (int) ($stats['completed'] ?? 0);
+
+            $stats['pending'] =
+                (int) ($stats['pending'] ?? 0);
+
+            $stats['accepted'] =
+                (int) ($stats['accepted'] ?? 0);
+
+            $stats['in_progress'] =
+                (int) ($stats['in_progress'] ?? 0);
+
+            $stats['declined'] =
+                (int) ($stats['declined'] ?? 0);
+
 
             return $stats;
-
         } catch (PDOException $e) {
-            error_log("Get Exchange Stats Error: " . $e->getMessage());
-            return [];
+
+            error_log(
+                "Get Exchange Stats Error: "
+                    . $e->getMessage()
+            );
+
+            return [
+                'total' => 0,
+                'completed' => 0,
+                'pending' => 0,
+                'accepted' => 0,
+                'in_progress' => 0,
+                'declined' => 0,
+                'as_teacher' => 0,
+                'as_learner' => 0
+            ];
         }
     }
 }
-?>

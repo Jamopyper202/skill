@@ -1,90 +1,386 @@
 <?php
+
 /**
  * ============================================================================
- * Layout Footer
- * ============================================================================
- * 
- * Common footer section included at the bottom of every page.
- * Closes the main content, loads Bootstrap JS, and includes custom scripts.
- * 
- * @author     B.Sc Computer Science Student
- * @project    SkillSwap - Digital Skill Marketplace
- * @year       Final Year Project
+ * SkillSwap Layout Footer
  * ============================================================================
  */
 ?>
-    </main><!-- End of main content -->
 
-    <!-- Footer -->
-    <footer class="footer mt-auto">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4 mb-3">
-                    <h5 class="mb-3">
-                        <i class="bi bi-arrow-left-right me-2"></i>
+</main><!-- End of main content -->
+
+
+<!-- ========================================================================
+     FOOTER
+     ======================================================================== -->
+
+<footer class="footer">
+
+    <div class="container">
+
+        <div class="row g-4">
+
+
+            <!-- ==============================================================
+                 BRAND
+                 ============================================================== -->
+
+            <div class="col-lg-5 col-md-6">
+
+                <a
+                    href="<?php echo url('Dashboard', 'index'); ?>"
+                    class="text-decoration-none d-inline-flex align-items-center mb-3">
+
+                    <span
+                        class="d-flex align-items-center justify-content-center me-2"
+                        style="
+                            width: 42px;
+                            height: 42px;
+                            border-radius: 11px;
+                            background: var(--primary-color);
+                            color: white;
+                        ">
+                        <i class="bi bi-arrow-left-right fs-5"></i>
+                    </span>
+
+                    <span
+                        class="fw-bold fs-4 text-white">
                         <?php echo e(APP_NAME); ?>
-                    </h5>
-                    <p class="text-muted small">
-                        <?php echo e(APP_DESCRIPTION); ?>
-                    </p>
-                    <p class="text-muted small mb-0">
-                        Version <?php echo e(APP_VERSION); ?>
-                    </p>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <h6 class="mb-3">Quick Links</h6>
-                    <ul class="list-unstyled small">
-                        <?php if (isLoggedIn()): ?>
-                            <li><a href="<?php echo url('Dashboard', 'index'); ?>" class="text-decoration-none text-muted">Dashboard</a></li>
-                            <li><a href="<?php echo url('Skill', 'browse'); ?>" class="text-decoration-none text-muted">Browse Skills</a></li>
-                            <li><a href="<?php echo url('Match', 'index'); ?>" class="text-decoration-none text-muted">Find Matches</a></li>
-                            <li><a href="<?php echo url('Profile', 'index'); ?>" class="text-decoration-none text-muted">My Profile</a></li>
-                        <?php else: ?>
-                            <li><a href="<?php echo url('Auth', 'login'); ?>" class="text-decoration-none text-muted">Login</a></li>
-                            <li><a href="<?php echo url('Auth', 'register'); ?>" class="text-decoration-none text-muted">Register</a></li>
-                        <?php endif; ?>
-                    </ul>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <h6 class="mb-3">Contact</h6>
-                    <ul class="list-unstyled small text-muted">
-                        <li><i class="bi bi-envelope me-2"></i>support@skillswap.com</li>
-                        <li><i class="bi bi-geo-alt me-2"></i>University Campus</li>
-                        <li><i class="bi bi-clock me-2"></i>Mon - Fri, 9AM - 5PM</li>
-                    </ul>
-                </div>
-            </div>
-            <hr class="border-secondary my-3">
-            <div class="row">
-                <div class="col-md-6 text-center text-md-start">
-                    <p class="small text-muted mb-0">
-                        &copy; <?php echo date('Y'); ?> <?php echo e(APP_NAME); ?>. All rights reserved.
-                    </p>
-                </div>
-                <div class="col-md-6 text-center text-md-end">
-                    <p class="small text-muted mb-0">
-                        B.Sc Computer Science Final Year Project
-                    </p>
-                </div>
-            </div>
-        </div>
-    </footer>
+                    </span>
 
-    <!-- Bootstrap 5 JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <!-- Custom JavaScript -->
-    <script src="<?php echo asset('js/main.js'); ?>"></script>
-    
-    <!-- Auto-hide flash messages after 5 seconds -->
-    <script>
-        $(document).ready(function() {
-            setTimeout(function() {
-                $('.alert-dismissible').fadeOut('slow', function() {
+                </a>
+
+
+                <p class="mb-3" style="max-width: 430px;">
+                    <?php echo e(APP_DESCRIPTION); ?>
+                </p>
+
+
+                <!-- Social / Platform Icons -->
+
+                <div class="d-flex gap-2">
+
+                    <a
+                        href="#"
+                        class="d-flex align-items-center justify-content-center rounded-circle"
+                        style="
+                            width: 38px;
+                            height: 38px;
+                            background: rgba(255,255,255,.08);
+                        "
+                        aria-label="Facebook">
+                        <i class="bi bi-facebook"></i>
+                    </a>
+
+                    <a
+                        href="#"
+                        class="d-flex align-items-center justify-content-center rounded-circle"
+                        style="
+                            width: 38px;
+                            height: 38px;
+                            background: rgba(255,255,255,.08);
+                        "
+                        aria-label="Instagram">
+                        <i class="bi bi-instagram"></i>
+                    </a>
+
+                    <a
+                        href="#"
+                        class="d-flex align-items-center justify-content-center rounded-circle"
+                        style="
+                            width: 38px;
+                            height: 38px;
+                            background: rgba(255,255,255,.08);
+                        "
+                        aria-label="LinkedIn">
+                        <i class="bi bi-linkedin"></i>
+                    </a>
+
+                    <a
+                        href="#"
+                        class="d-flex align-items-center justify-content-center rounded-circle"
+                        style="
+                            width: 38px;
+                            height: 38px;
+                            background: rgba(255,255,255,.08);
+                        "
+                        aria-label="GitHub">
+                        <i class="bi bi-github"></i>
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- ==============================================================
+                 QUICK LINKS
+                 ============================================================== -->
+
+            <div class="col-lg-2 col-md-6">
+
+                <h5>Quick Links</h5>
+
+                <ul class="list-unstyled mb-0">
+
+                    <?php if (isLoggedIn()): ?>
+
+                        <li class="mb-2">
+                            <a href="<?php echo url('Dashboard', 'index'); ?>">
+                                Dashboard
+                            </a>
+                        </li>
+
+                        <li class="mb-2">
+                            <a href="<?php echo url('Skill', 'browse'); ?>">
+                                Browse Skills
+                            </a>
+                        </li>
+
+                        <li class="mb-2">
+                            <a href="<?php echo url('Match', 'index'); ?>">
+                                Find Matches
+                            </a>
+                        </li>
+
+                        <li class="mb-2">
+                            <a href="<?php echo url('Exchange', 'index'); ?>">
+                                Exchanges
+                            </a>
+                        </li>
+
+                    <?php else: ?>
+
+                        <li class="mb-2">
+                            <a href="<?php echo url('Auth', 'login'); ?>">
+                                Login
+                            </a>
+                        </li>
+
+                        <li class="mb-2">
+                            <a href="<?php echo url('Auth', 'register'); ?>">
+                                Create Account
+                            </a>
+                        </li>
+
+                    <?php endif; ?>
+
+                </ul>
+
+            </div>
+
+
+            <!-- ==============================================================
+                 ACCOUNT
+                 ============================================================== -->
+
+            <div class="col-lg-2 col-md-6">
+
+                <h5>Account</h5>
+
+                <ul class="list-unstyled mb-0">
+
+                    <?php if (isLoggedIn()): ?>
+
+                        <li class="mb-2">
+                            <a href="<?php echo url('Profile', 'index'); ?>">
+                                My Profile
+                            </a>
+                        </li>
+
+                        <li class="mb-2">
+                            <a href="<?php echo url('Message', 'index'); ?>">
+                                Messages
+                            </a>
+                        </li>
+
+                        <li class="mb-2">
+                            <a href="<?php echo url('Review', 'index'); ?>">
+                                My Reviews
+                            </a>
+                        </li>
+
+                        <li class="mb-2">
+                            <a href="<?php echo url('Notification', 'index'); ?>">
+                                Notifications
+                            </a>
+                        </li>
+
+                    <?php else: ?>
+
+                        <li class="mb-2">
+                            <a href="<?php echo url('Auth', 'login'); ?>">
+                                Sign In
+                            </a>
+                        </li>
+
+                        <li class="mb-2">
+                            <a href="<?php echo url('Auth', 'register'); ?>">
+                                Get Started
+                            </a>
+                        </li>
+
+                    <?php endif; ?>
+
+                </ul>
+
+            </div>
+
+
+            <!-- ==============================================================
+                 CONTACT
+                 ============================================================== -->
+
+            <div class="col-lg-3 col-md-6">
+
+                <h5>Get in Touch</h5>
+
+                <ul class="list-unstyled mb-0">
+
+                    <li class="d-flex align-items-start mb-3">
+
+                        <i class="bi bi-envelope me-3 mt-1"></i>
+
+                        <div>
+                            <small class="d-block text-white">
+                                Email
+                            </small>
+
+                            <a href="mailto:programminglanguage293@gmail.com" class="text-decoration-none">
+                                support@skillswap.com
+                            </a>
+                        </div>
+
+                    </li>
+
+
+                    <li class="d-flex align-items-start mb-3">
+
+                        <i class="bi bi-geo-alt me-3 mt-1"></i>
+
+                        <div>
+                            <small class="d-block text-white">
+                                Location
+                            </small>
+
+                            <span>
+                            Skill Street, Knowledge City, KS 12345
+                            </span>
+                        </div>
+
+                    </li>
+
+
+                    <li class="d-flex align-items-start">
+
+                        <i class="bi bi-clock me-3 mt-1"></i>
+
+                        <div>
+                            <small class="d-block text-white">
+                                Support Hours
+                            </small>
+
+                            <span>
+                                Mon - Fri, 9AM - 5PM
+                            </span>
+                        </div>
+
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+
+        <!-- ==================================================================
+             FOOTER BOTTOM
+             ================================================================== -->
+
+        <div class="footer-bottom">
+
+            <div class="row align-items-center">
+
+                <div class="col-md-6 text-center text-md-start">
+
+                    <p class="small mb-0">
+
+                        &copy;
+                        <?php echo date('Y'); ?>
+
+                        <?php echo e(APP_NAME); ?>.
+
+                        All rights reserved.
+
+                    </p>
+
+                </div>
+
+
+                <div class="col-md-6 text-center text-md-end mt-2 mt-md-0">
+
+                    <p class="small mb-0">
+
+                        Built with
+                        <i class="bi bi-heart-fill text-danger mx-1"></i>
+
+                        for skill sharing
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Version -->
+
+        <div class="text-center mt-3">
+
+            <small style="color: #6b7280;">
+                Version <?php echo e(APP_VERSION); ?>
+            </small>
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+<!-- ========================================================================
+     JAVASCRIPT
+     ======================================================================== -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="<?php echo asset('js/main.js'); ?>"></script>
+
+
+<!-- Auto-hide flash messages -->
+
+<script>
+    $(document).ready(function() {
+
+        setTimeout(function() {
+
+            $('.alert-dismissible').fadeOut(
+                'slow',
+                function() {
+
                     $(this).alert('close');
-                });
-            }, 5000);
-        });
-    </script>
+
+                }
+            );
+
+        }, 5000);
+
+    });
+</script>
+
 </body>
+
 </html>

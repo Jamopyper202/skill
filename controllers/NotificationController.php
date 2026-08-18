@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ============================================================================
  * Notification Controller
@@ -13,7 +14,8 @@
  * ============================================================================
  */
 
-class NotificationController {
+class NotificationController
+{
     /**
      * Notification model instance
      * @var Notification
@@ -23,7 +25,8 @@ class NotificationController {
     /**
      * Constructor
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->notificationModel = new Notification();
     }
 
@@ -34,26 +37,55 @@ class NotificationController {
      * 
      * Display all notifications for the logged-in user.
      */
-    public function index(): void {
+    public function index(): void
+    {
         $userId = getCurrentUserId();
 
         $filter = $_GET['filter'] ?? 'all';
-        $page = (int) ($_GET['page'] ?? 1);
+
+        $allowedFilters = ['all', 'unread', 'read'];
+
+        if (!in_array($filter, $allowedFilters, true)) {
+            $filter = 'all';
+        }
+
+        $page = max(1, (int) ($_GET['page'] ?? 1));
+
         $limit = ITEMS_PER_PAGE;
+
         $offset = ($page - 1) * $limit;
 
-        // Get notifications
-        $notifications = $this->notificationModel->getForUser($userId, $filter, $limit, $offset);
+        $notifications = $this->notificationModel->getForUser(
+            $userId,
+            $filter,
+            $limit,
+            $offset
+        );
+
+        $total = $this->notificationModel->countTotal(
+            $userId,
+            $filter
+        );
 
         // Get total counts
-        $total = $this->notificationModel->countTotal($userId, $filter);
-        $totalPages = ceil($total / $limit);
+        $total = (int) $this->notificationModel->countTotal(
+            $userId,
+            $filter
+        );
 
-        $unreadCount = $this->notificationModel->countUnread($userId);
-        $readCount = $this->notificationModel->countTotal($userId, 'read');
+        $totalPages = (int) ceil($total / $limit);
+
+        $unreadCount = (int) $this->notificationModel->countUnread($userId);
+
+        $readCount = (int) $this->notificationModel->countTotal(
+            $userId,
+            'read'
+        );
 
         setPageTitle('Notifications');
-        require_once BASE_PATH . '/views/notifications/index.php';
+
+        require_once BASE_PATH .
+            '/views/notifications/index.php';
     }
 
     /**
@@ -63,7 +95,8 @@ class NotificationController {
      * 
      * Mark a single notification as read.
      */
-    public function markRead(): void {
+    public function markRead(): void
+    {
         $userId = getCurrentUserId();
         $notificationId = (int) ($_GET['id'] ?? 0);
 
@@ -97,7 +130,8 @@ class NotificationController {
      * 
      * Mark all notifications for the user as read.
      */
-    public function markAllRead(): void {
+    public function markAllRead(): void
+    {
         $userId = getCurrentUserId();
 
         $count = $this->notificationModel->markAllAsRead($userId);
@@ -122,7 +156,8 @@ class NotificationController {
      * 
      * Delete a single notification.
      */
-    public function delete(): void {
+    public function delete(): void
+    {
         $userId = getCurrentUserId();
         $notificationId = (int) ($_GET['id'] ?? 0);
 
@@ -142,7 +177,8 @@ class NotificationController {
      * 
      * Delete all read notifications.
      */
-    public function deleteAllRead(): void {
+    public function deleteAllRead(): void
+    {
         $userId = getCurrentUserId();
 
         $count = $this->notificationModel->deleteAllRead($userId);
@@ -158,7 +194,8 @@ class NotificationController {
      * 
      * Return unread notification count for navbar badge.
      */
-    public function unreadCount(): void {
+    public function unreadCount(): void
+    {
         header('Content-Type: application/json');
 
         $userId = getCurrentUserId();
@@ -171,4 +208,3 @@ class NotificationController {
         exit;
     }
 }
-?>

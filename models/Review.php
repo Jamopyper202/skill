@@ -1,10 +1,12 @@
 <?php
+
 /**
  * ============================================================================
  * Review Model
  * ============================================================================
  * 
- * Handles all database operations related to user reviews and ratings.
+ * Handles all database operations related t
+ * o user reviews and ratings.
  * Includes: creating reviews, calculating averages, retrieving reviews.
  * 
  * @author     B.Sc Computer Science Student
@@ -13,7 +15,8 @@
  * ============================================================================
  */
 
-class Review {
+class Review
+{
     /**
      * Database connection instance
      * @var PDO
@@ -23,7 +26,8 @@ class Review {
     /**
      * Constructor - initialize database connection
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->db = Database::getConnection();
     }
 
@@ -41,7 +45,8 @@ class Review {
      * @param string $comment     Review text/comment
      * @return int|false          New review ID or false
      */
-    public function create(int $exchangeId, int $reviewerId, int $revieweeId, int $rating, string $comment): int|false {
+    public function create(int $exchangeId, int $reviewerId, int $revieweeId, int $rating, string $comment): int|false
+    {
         try {
             // Validate rating range
             if ($rating < 1 || $rating > 5) {
@@ -62,7 +67,6 @@ class Review {
             ]);
 
             return (int) $this->db->lastInsertId();
-
         } catch (PDOException $e) {
             error_log("Create Review Error: " . $e->getMessage());
             return false;
@@ -72,14 +76,15 @@ class Review {
     /**
      * =========================================================================
      * GET REVIEW BY ID
-    * =========================================================================
+     * =========================================================================
      * 
      * Retrieve a single review by ID.
      * 
      * @param int $reviewId  Review ID
      * @return array|false
      */
-    public function getById(int $reviewId): array|false {
+    public function getById(int $reviewId): array|false
+    {
         try {
             $stmt = $this->db->prepare("
                 SELECT r.*,
@@ -100,7 +105,6 @@ class Review {
 
             $stmt->execute([':id' => $reviewId]);
             return $stmt->fetch();
-
         } catch (PDOException $e) {
             error_log("Get Review By ID Error: " . $e->getMessage());
             return false;
@@ -119,7 +123,8 @@ class Review {
      * @param int $offset  Pagination offset
      * @return array
      */
-    public function getForUser(int $userId, int $limit = 10, int $offset = 0): array {
+    public function getForUser(int $userId, int $limit = 10, int $offset = 0): array
+    {
         try {
             $stmt = $this->db->prepare("
                 SELECT r.*,
@@ -140,13 +145,12 @@ class Review {
                 LIMIT :limit OFFSET :offset
             ");
 
-            $stmt->bindValue(':user_id', $userId);
+            $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
             $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
             $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
             $stmt->execute();
 
             return $stmt->fetchAll();
-
         } catch (PDOException $e) {
             error_log("Get Reviews For User Error: " . $e->getMessage());
             return [];
@@ -163,7 +167,8 @@ class Review {
      * @param int $exchangeId  Exchange request ID
      * @return array
      */
-    public function getByExchange(int $exchangeId): array {
+    public function getByExchange(int $exchangeId): array
+    {
         try {
             $stmt = $this->db->prepare("
                 SELECT r.*,
@@ -180,7 +185,6 @@ class Review {
 
             $stmt->execute([':exchange_id' => $exchangeId]);
             return $stmt->fetchAll();
-
         } catch (PDOException $e) {
             error_log("Get Reviews By Exchange Error: " . $e->getMessage());
             return [];
@@ -197,7 +201,8 @@ class Review {
      * @param int $userId  User ID
      * @return float       Average rating (0.0 to 5.0)
      */
-    public function getAverageRating(int $userId): float {
+    public function getAverageRating(int $userId): float
+    {
         try {
             $stmt = $this->db->prepare("
                 SELECT AVG(rating) as avg_rating, COUNT(*) as total_reviews
@@ -209,7 +214,6 @@ class Review {
             $result = $stmt->fetch();
 
             return $result['avg_rating'] ? round((float) $result['avg_rating'], 1) : 0.0;
-
         } catch (PDOException $e) {
             error_log("Get Average Rating Error: " . $e->getMessage());
             return 0.0;
@@ -226,10 +230,15 @@ class Review {
      * @param int $userId  User ID
      * @return array       Array with rating counts
      */
-    public function getRatingBreakdown(int $userId): array {
+    public function getRatingBreakdown(int $userId): array
+    {
         try {
             $breakdown = [
-                1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0
+                1 => 0,
+                2 => 0,
+                3 => 0,
+                4 => 0,
+                5 => 0
             ];
 
             $stmt = $this->db->prepare("
@@ -247,7 +256,6 @@ class Review {
             }
 
             return $breakdown;
-
         } catch (PDOException $e) {
             error_log("Get Rating Breakdown Error: " . $e->getMessage());
             return [1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0];
@@ -265,18 +273,28 @@ class Review {
      * @param int $reviewerId  User who wants to write review
      * @return array           ['can_review' => bool, 'reason' => string]
      */
-    public function canReview(int $exchangeId, int $reviewerId): array {
+    public function canReview(int $exchangeId, int $reviewerId): array
+    {
         try {
-            // Check if exchange exists and is completed
+
+            // Check if exchange exists, is completed,
+            // and belongs to the current user.
             $stmt = $this->db->prepare("
-                SELECT * FROM exchange_requests 
-                WHERE id = :id AND status = 'completed'
-                AND (requester_id = :user_id OR receiver_id = :user_id)
-            ");
+            SELECT *
+            FROM exchange_requests
+            WHERE id = :exchange_id
+              AND status = 'completed'
+              AND (
+                    requester_id = :requester_id
+                    OR receiver_id = :receiver_id
+              )
+            LIMIT 1
+        ");
 
             $stmt->execute([
-                ':id'      => $exchangeId,
-                ':user_id' => $reviewerId
+                ':exchange_id' => $exchangeId,
+                ':requester_id' => $reviewerId,
+                ':receiver_id' => $reviewerId
             ]);
 
             $exchange = $stmt->fetch();
@@ -284,20 +302,24 @@ class Review {
             if (!$exchange) {
                 return [
                     'can_review' => false,
-                    'reason'     => 'Exchange not found or not completed yet.'
+                    'reason' => 'Exchange not found or not completed yet.'
                 ];
             }
 
-            // Determine who is being reviewed
-            $revieweeId = ($exchange['requester_id'] == $reviewerId) 
-                ? $exchange['receiver_id'] 
-                : $exchange['requester_id'];
+            // Determine the other user.
+            $revieweeId = (
+                (int) $exchange['requester_id'] === $reviewerId
+            )
+                ? (int) $exchange['receiver_id']
+                : (int) $exchange['requester_id'];
 
-            // Check if already reviewed
+            // Check whether this user already reviewed this exchange.
             $stmt = $this->db->prepare("
-                SELECT COUNT(*) as count FROM reviews
-                WHERE exchange_request_id = :exchange_id AND reviewer_id = :reviewer_id
-            ");
+            SELECT COUNT(*) AS count
+            FROM reviews
+            WHERE exchange_request_id = :exchange_id
+              AND reviewer_id = :reviewer_id
+        ");
 
             $stmt->execute([
                 ':exchange_id' => $exchangeId,
@@ -306,24 +328,25 @@ class Review {
 
             $result = $stmt->fetch();
 
-            if ($result['count'] > 0) {
+            if ((int) $result['count'] > 0) {
                 return [
                     'can_review' => false,
-                    'reason'     => 'You have already reviewed this exchange.'
+                    'reason' => 'You have already reviewed this exchange.'
                 ];
             }
 
             return [
                 'can_review' => true,
-                'reason'     => '',
-                'reviewee_id'=> $revieweeId
+                'reason' => '',
+                'reviewee_id' => $revieweeId
             ];
-
         } catch (PDOException $e) {
+
             error_log("Can Review Error: " . $e->getMessage());
+
             return [
                 'can_review' => false,
-                'reason'     => 'An error occurred. Please try again.'
+                'reason' => 'An error occurred. Please try again.'
             ];
         }
     }
@@ -339,7 +362,8 @@ class Review {
      * @param int $reviewerId  Reviewer user ID
      * @return bool
      */
-    public function hasReviewed(int $exchangeId, int $reviewerId): bool {
+    public function hasReviewed(int $exchangeId, int $reviewerId): bool
+    {
         try {
             $stmt = $this->db->prepare("
                 SELECT COUNT(*) as count FROM reviews
@@ -353,7 +377,6 @@ class Review {
 
             $result = $stmt->fetch();
             return $result['count'] > 0;
-
         } catch (PDOException $e) {
             error_log("Has Reviewed Error: " . $e->getMessage());
             return false;
@@ -373,7 +396,8 @@ class Review {
      * @param string $comment     New comment
      * @return bool
      */
-    public function update(int $reviewId, int $reviewerId, int $rating, string $comment): bool {
+    public function update(int $reviewId, int $reviewerId, int $rating, string $comment): bool
+    {
         try {
             // Validate rating
             if ($rating < 1 || $rating > 5) {
@@ -392,9 +416,8 @@ class Review {
                 ':rating'     => $rating,
                 ':comment'    => trim($comment),
                 ':id'         => $reviewId,
-                ':reviewer_id'=> $reviewerId
+                ':reviewer_id' => $reviewerId
             ]);
-
         } catch (PDOException $e) {
             error_log("Update Review Error: " . $e->getMessage());
             return false;
@@ -412,7 +435,8 @@ class Review {
      * @param int $reviewerId  Reviewer ID
      * @return bool
      */
-    public function delete(int $reviewId, int $reviewerId): bool {
+    public function delete(int $reviewId, int $reviewerId): bool
+    {
         try {
             $stmt = $this->db->prepare("
                 DELETE FROM reviews 
@@ -421,9 +445,8 @@ class Review {
 
             return $stmt->execute([
                 ':id'         => $reviewId,
-                ':reviewer_id'=> $reviewerId
+                ':reviewer_id' => $reviewerId
             ]);
-
         } catch (PDOException $e) {
             error_log("Delete Review Error: " . $e->getMessage());
             return false;
@@ -440,7 +463,8 @@ class Review {
      * @param int $userId  User ID
      * @return int
      */
-    public function countForUser(int $userId): int {
+    public function countForUser(int $userId): int
+    {
         try {
             $stmt = $this->db->prepare("
                 SELECT COUNT(*) as total FROM reviews WHERE reviewee_id = :user_id
@@ -449,7 +473,6 @@ class Review {
             $stmt->execute([':user_id' => $userId]);
             $result = $stmt->fetch();
             return (int) $result['total'];
-
         } catch (PDOException $e) {
             error_log("Count Reviews Error: " . $e->getMessage());
             return 0;
@@ -466,7 +489,8 @@ class Review {
      * @param int $limit  Number of reviews
      * @return array
      */
-    public function getRecent(int $limit = 5): array {
+    public function getRecent(int $limit = 5): array
+    {
         try {
             $stmt = $this->db->prepare("
                 SELECT r.*,
@@ -487,11 +511,9 @@ class Review {
             $stmt->execute();
 
             return $stmt->fetchAll();
-
         } catch (PDOException $e) {
             error_log("Get Recent Reviews Error: " . $e->getMessage());
             return [];
         }
     }
 }
-?>

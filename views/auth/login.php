@@ -25,7 +25,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <style>
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #6c7cc2 0%, #a080c1 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -34,7 +34,7 @@
         .login-card {
             border: none;
             border-radius: 1rem;
-            box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.3);
+            box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.4);
         }
         .login-logo {
             font-size: 3rem;
@@ -109,7 +109,7 @@
                 <div class="text-center mt-3 text-white">
                     <p class="small mb-0">
                         <i class="bi bi-shield-check me-1"></i>
-                        Secure login with password_hash()
+                        Secure login
                     </p>
                 </div>
             </div>

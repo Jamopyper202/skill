@@ -4,7 +4,7 @@ $activeTab = 'admin';
 ?>
 
 <?php require_once __DIR__ . '/../layouts/header.php'; ?>
-<?php require_once __DIR__ . '/../layouts/navbar.php'; ?>
+<?php require_once __DIR__ . '/../layouts/admin-navbar.php'; ?>
 
 <div class="container-fluid py-4">
     <h1 class="h2 mb-4"><i class="fas fa-star text-warning me-2"></i>Manage Reviews</h1>

@@ -300,6 +300,58 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 });
+       function messageTimeAgo(timestamp) {
+    if (!timestamp) {
+        return '';
+    }
+
+    // Treat database timestamp as Pacific time.
+    const iso = timestamp.replace(' ', 'T') + '-08:00';
+
+    const messageDate = new Date(iso);
+    const now = new Date();
+
+    if (isNaN(messageDate.getTime())) {
+        return '';
+    }
+
+    const seconds = Math.floor(
+        (now.getTime() - messageDate.getTime()) / 1000
+    );
+
+    if (seconds < 0) {
+        return 'Just now';
+    }
+
+    if (seconds < 60) {
+        return 'Just now';
+    }
+
+    if (seconds < 3600) {
+        const minutes = Math.floor(seconds / 60);
+
+        return minutes === 1
+            ? '1 min ago'
+            : minutes + ' mins ago';
+    }
+
+    if (seconds < 86400) {
+        const hours = Math.floor(seconds / 3600);
+
+        return hours === 1
+            ? '1 hr ago'
+            : hours + ' hrs ago';
+    }
+
+    const days = Math.floor(seconds / 86400);
+
+    if (days === 1) {
+        return 'Yesterday';
+    }
+
+    return days + ' days ago';
+}
+
 </script>
 
 

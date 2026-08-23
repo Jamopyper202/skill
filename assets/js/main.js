@@ -121,7 +121,7 @@ $(document).ready(function() {
                         id: response.message_id,
                         sender_id: $('#chat-container').data('my-id'),
                         content: content.replace(/\n/g, '<br>'),
-                        created_at: 'Just now',
+                        created_at: response.created_at,
                         is_me: true
                     });
                     

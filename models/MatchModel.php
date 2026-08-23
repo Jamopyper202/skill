@@ -352,53 +352,87 @@ class MatchModel
      * @param int    $limit      Number of matches to return
      * @return array
      */
-    public function getTopMatches(int $userId, int $minScore = 30, int $limit = 5): array
-    {
-        try {
-            $stmt = $this->db->prepare("
-                SELECT m.*, 
-                    CASE 
-                        WHEN m.user_id_1 = :user_id THEN u2.full_name 
-                        ELSE u1.full_name 
-                    END as other_user_name,
-                    CASE 
-                        WHEN m.user_id_1 = :user_id THEN p2.profile_picture 
-                        ELSE p1.profile_picture 
-                    END as other_user_picture,
-                    CASE 
-                        WHEN m.user_id_1 = :user_id THEN p2.experience_level 
-                        ELSE p1.experience_level 
-                    END as other_user_experience,
-                    CASE 
-                        WHEN m.user_id_1 = :user_id THEN p2.bio 
-                        ELSE p1.bio 
-                    END as other_user_bio,
-                    s.name as matched_skill_name,
-                    m.notes as match_reason
-                FROM matches m
-                JOIN users u1 ON m.user_id_1 = u1.id
-                JOIN users u2 ON m.user_id_2 = u2.id
-                LEFT JOIN profiles p1 ON u1.id = p1.user_id
-                LEFT JOIN profiles p2 ON u2.id = p2.user_id
-                LEFT JOIN skills s ON m.matched_skill_id = s.id
-                WHERE (m.user_id_1 = :user_id OR m.user_id_2 = :user_id)
-                    AND m.status = 'pending'
-                    AND m.match_score >= :min_score
-                ORDER BY m.match_score DESC
-                LIMIT :limit
-            ");
+public function getTopMatches(int $userId, int $minScore = 30, int $limit = 5): array
+{
+    try {
+        $stmt = $this->db->prepare("
+            SELECT 
+                m.*,
 
-            $stmt->bindValue(':user_id', $userId);
-            $stmt->bindValue(':min_score', $minScore, PDO::PARAM_INT);
-            $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+                CASE 
+                    WHEN m.user_id_1 = :user_id_name THEN u2.full_name
+                    ELSE u1.full_name
+                END AS other_user_name,
 
-            $stmt->execute();
-            return $stmt->fetchAll();
-        } catch (PDOException $e) {
-            error_log("Get Top Matches Error: " . $e->getMessage());
-            return [];
-        }
+                CASE 
+                    WHEN m.user_id_1 = :user_id_picture THEN p2.profile_picture
+                    ELSE p1.profile_picture
+                END AS other_user_picture,
+
+                CASE 
+                    WHEN m.user_id_1 = :user_id_experience THEN p2.experience_level
+                    ELSE p1.experience_level
+                END AS other_user_experience,
+
+                CASE 
+                    WHEN m.user_id_1 = :user_id_bio THEN p2.bio
+                    ELSE p1.bio
+                END AS other_user_bio,
+
+                s.name AS matched_skill_name,
+                m.notes AS match_reason
+
+            FROM matches m
+
+            JOIN users u1 
+                ON m.user_id_1 = u1.id
+
+            JOIN users u2 
+                ON m.user_id_2 = u2.id
+
+            LEFT JOIN profiles p1 
+                ON u1.id = p1.user_id
+
+            LEFT JOIN profiles p2 
+                ON u2.id = p2.user_id
+
+            LEFT JOIN skills s 
+                ON m.matched_skill_id = s.id
+
+            WHERE (
+                m.user_id_1 = :user_id_where_1
+                OR m.user_id_2 = :user_id_where_2
+            )
+
+            AND m.status = 'pending'
+
+            AND m.match_score >= :min_score
+
+            ORDER BY m.match_score DESC
+
+            LIMIT :limit
+        ");
+
+        $stmt->bindValue(':user_id_name', $userId, PDO::PARAM_INT);
+        $stmt->bindValue(':user_id_picture', $userId, PDO::PARAM_INT);
+        $stmt->bindValue(':user_id_experience', $userId, PDO::PARAM_INT);
+        $stmt->bindValue(':user_id_bio', $userId, PDO::PARAM_INT);
+
+        $stmt->bindValue(':user_id_where_1', $userId, PDO::PARAM_INT);
+        $stmt->bindValue(':user_id_where_2', $userId, PDO::PARAM_INT);
+
+        $stmt->bindValue(':min_score', $minScore, PDO::PARAM_INT);
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    } catch (PDOException $e) {
+        error_log("Get Top Matches Error: " . $e->getMessage());
+        return [];
     }
+}
 
     /**
      * =========================================================================

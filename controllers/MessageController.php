@@ -64,7 +64,7 @@ class MessageController
 
         // Get recent conversations
         $conversations = $this->messageModel->getRecentConversations($userId);
-  
+
         // Mark all as read when viewing inbox
         // (Individual conversation unread counts are handled separately)
 
@@ -110,13 +110,20 @@ class MessageController
 
         // Get last message ID for AJAX polling
         $lastMessageId = 0;
+
         if (!empty($messages)) {
             $lastMessage = end($messages);
             $lastMessageId = $lastMessage['id'];
         }
 
+        // Variables for the view
+        $conversationUser = $otherUser;
+        $conversationUserId = $otherUserId;
+
         setPageTitle('Chat with ' . $otherUser['full_name']);
+
         require_once BASE_PATH . '/views/messages/conversation.php';
+        
     }
 
     /**
@@ -269,7 +276,7 @@ class MessageController
                 'id' => $msg['id'],
                 'sender_id' => $msg['sender_id'],
                 'content' => nl2br(e($msg['content'])),
-                'created_at' => timeAgo($msg['created_at']),
+                'created_at' => $msg['created_at'],
                 'is_me' => $msg['sender_id'] == $userId
             ];
         }

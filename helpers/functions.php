@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ============================================================================
  * Helper Functions
@@ -25,7 +26,8 @@
  * @param bool   $exit   Whether to exit after redirect
  * @return void
  */
-function redirect(string $url, bool $exit = true): void {
+function redirect(string $url, bool $exit = true): void
+{
     header("Location: " . $url);
     if ($exit) {
         exit;
@@ -43,7 +45,8 @@ function redirect(string $url, bool $exit = true): void {
  * @param string $type     Bootstrap alert type: success, danger, warning, info
  * @return void
  */
-function flash(string $message, string $type = 'info'): void {
+function flash(string $message, string $type = 'info'): void
+{
     $_SESSION['flash_messages'][] = [
         'message' => $message,
         'type'    => $type
@@ -59,7 +62,8 @@ function flash(string $message, string $type = 'info'): void {
  * 
  * @return array  Array of flash messages
  */
-function getFlashMessages(): array {
+function getFlashMessages(): array
+{
     $messages = $_SESSION['flash_messages'] ?? [];
     $_SESSION['flash_messages'] = [];
     return $messages;
@@ -75,7 +79,8 @@ function getFlashMessages(): array {
  * @param string $input  Raw input string
  * @return string        Sanitized string
  */
-function sanitize(string $input): string {
+function sanitize(string $input): string
+{
     $input = trim($input);
     $input = stripslashes($input);
     $input = htmlspecialchars($input, ENT_QUOTES, 'UTF-8');
@@ -92,7 +97,8 @@ function sanitize(string $input): string {
  * @param array $data  Input array
  * @return array       Sanitized array
  */
-function sanitizeArray(array $data): array {
+function sanitizeArray(array $data): array
+{
     $clean = [];
     foreach ($data as $key => $value) {
         if (is_string($value)) {
@@ -117,7 +123,8 @@ function sanitizeArray(array $data): array {
  * @param string $default  Default value if not found
  * @return string          Old input value or default
  */
-function old(string $key, string $default = ''): string {
+function old(string $key, string $default = ''): string
+{
     $value = $_SESSION['old_input'][$key] ?? $default;
     unset($_SESSION['old_input'][$key]);
     return sanitize((string) $value);
@@ -133,7 +140,8 @@ function old(string $key, string $default = ''): string {
  * @param array $input  Form data array (typically $_POST)
  * @return void
  */
-function storeOldInput(array $input): void {
+function storeOldInput(array $input): void
+{
     $_SESSION['old_input'] = $input;
 }
 
@@ -149,13 +157,14 @@ function storeOldInput(array $input): void {
  * @param array  $params      Additional parameters
  * @return string             Generated URL
  */
-function url(string $controller = 'Dashboard', string $action = 'index', array $params = []): string {
+function url(string $controller = 'Dashboard', string $action = 'index', array $params = []): string
+{
     $url = BASE_URL . '/index.php?controller=' . $controller . '&action=' . $action;
-    
+
     foreach ($params as $key => $value) {
         $url .= '&' . $key . '=' . urlencode($value);
     }
-    
+
     return $url;
 }
 
@@ -169,7 +178,8 @@ function url(string $controller = 'Dashboard', string $action = 'index', array $
  * @param string $path  Asset path relative to assets folder
  * @return string       Full asset URL
  */
-function asset(string $path): string {
+function asset(string $path): string
+{
     return ASSETS_URL . '/' . ltrim($path, '/');
 }
 
@@ -183,7 +193,8 @@ function asset(string $path): string {
  * @param string $filename  Uploaded file name
  * @return string           Full upload URL
  */
-function uploadUrl(string $filename): string {
+function uploadUrl(string $filename): string
+{
     if (empty($filename) || $filename === 'download.png') {
         return asset('images/download.png');
     }
@@ -201,13 +212,30 @@ function uploadUrl(string $filename): string {
  * @param string $format  PHP date format
  * @return string         Formatted date
  */
-function formatDate(string $date, string $format = 'M d, Y'): string {
-    if (empty($date) || $date === '0000-00-00 00:00:00') {
-        return 'N/A';
+// function formatDate(string $date, string $format = 'M d, Y'): string
+// {
+//     if (empty($date) || $date === '0000-00-00 00:00:00') {
+//         return 'N/A';
+//     }
+//     return date($format, strtotime($date));
+// }
+function formatDate($date, $format = 'M d, Y'): string
+{
+    if (empty($date)) {
+        return '';
     }
-    return date($format, strtotime($date));
-}
 
+    try {
+        $timezone = new DateTimeZone('America/Los_Angeles');
+
+        $datetime = new DateTime($date, $timezone);
+
+        return $datetime->format($format);
+    } catch (Exception $e) {
+        error_log('formatDate error: ' . $e->getMessage());
+        return '';
+    }
+}
 /**
  * =========================================================================
  * FORMAT DATETIME
@@ -218,7 +246,8 @@ function formatDate(string $date, string $format = 'M d, Y'): string {
  * @param string $date    Datetime string
  * @return string         Formatted datetime
  */
-function formatDateTime(string $date): string {
+function formatDateTime(string $date): string
+{
     if (empty($date) || $date === '0000-00-00 00:00:00') {
         return 'N/A';
     }
@@ -235,30 +264,77 @@ function formatDateTime(string $date): string {
  * @param string $date  Date string
  * @return string       Time ago text
  */
-function timeAgo(string $date): string {
+function timeAgo(string $date): string
+{
     if (empty($date)) {
         return 'N/A';
     }
-    
-    $timestamp = strtotime($date);
-    $difference = time() - $timestamp;
-    
-    if ($difference < 60) {
-        return 'Just now';
-    } elseif ($difference < 3600) {
-        $minutes = floor($difference / 60);
-        return $minutes . ' minute' . ($minutes > 1 ? 's' : '') . ' ago';
-    } elseif ($difference < 86400) {
-        $hours = floor($difference / 3600);
-        return $hours . ' hour' . ($hours > 1 ? 's' : '') . ' ago';
-    } elseif ($difference < 604800) {
-        $days = floor($difference / 86400);
-        return $days . ' day' . ($days > 1 ? 's' : '') . ' ago';
-    } elseif ($difference < 2592000) {
-        $weeks = floor($difference / 604800);
-        return $weeks . ' week' . ($weeks > 1 ? 's' : '') . ' ago';
-    } else {
-        return formatDate($date);
+
+    try {
+        // MySQL is currently running at UTC-08:00
+        $mysqlTimezone = new DateTimeZone('-08:00');
+
+        $messageTime = DateTime::createFromFormat(
+            'Y-m-d H:i:s',
+            $date,
+            $mysqlTimezone
+        );
+
+        if (!$messageTime) {
+            return 'N/A';
+        }
+
+        // Current MySQL-equivalent time
+        $now = new DateTime('now', $mysqlTimezone);
+
+        $difference =
+            $now->getTimestamp() -
+            $messageTime->getTimestamp();
+
+        if ($difference < 60) {
+            return 'Just now';
+        }
+
+        if ($difference < 3600) {
+            $minutes = floor($difference / 60);
+
+            return $minutes === 1
+                ? '1 min ago'
+                : $minutes . ' mins ago';
+        }
+
+        if ($difference < 86400) {
+            $hours = floor($difference / 3600);
+
+            return $hours === 1
+                ? '1 hr ago'
+                : $hours . ' hrs ago';
+        }
+
+        if ($difference < 172800) {
+            return 'Yesterday';
+        }
+
+        if ($difference < 604800) {
+            $days = floor($difference / 86400);
+
+            return $days === 1
+                ? '1 day ago'
+                : $days . ' days ago';
+        }
+
+        if ($difference < 2592000) {
+            $weeks = floor($difference / 604800);
+
+            return $weeks === 1
+                ? '1 week ago'
+                : $weeks . ' weeks ago';
+        }
+
+        return $messageTime->format('M j, Y');
+
+    } catch (Exception $e) {
+        return 'N/A';
     }
 }
 
@@ -273,7 +349,8 @@ function timeAgo(string $date): string {
  * @param int    $length  Maximum length
  * @return string         Truncated text
  */
-function truncate(string $text, int $length = 100): string {
+function truncate(string $text, int $length = 100): string
+{
     if (strlen($text) <= $length) {
         return $text;
     }
@@ -292,49 +369,65 @@ function truncate(string $text, int $length = 100): string {
  * @param string $baseUrl      Base URL with query params
  * @return string              Pagination HTML
  */
-function pagination(int $currentPage, int $totalPages, string $baseUrl): string {
+function pagination(int $currentPage, int $totalPages, string $baseUrl): string
+{
     if ($totalPages <= 1) {
         return '';
     }
-    
+
     $html = '<nav aria-label="Page navigation"><ul class="pagination justify-content-center">';
-    
+
     // Previous button
     $prevDisabled = $currentPage <= 1 ? ' disabled' : '';
     $prevUrl = $currentPage > 1 ? $baseUrl . '&page=' . ($currentPage - 1) : '#';
     $html .= '<li class="page-item' . $prevDisabled . '"><a class="page-link" href="' . $prevUrl . '">Previous</a></li>';
-    
+
     // Page numbers
     $start = max(1, $currentPage - 2);
     $end = min($totalPages, $currentPage + 2);
-    
+
     if ($start > 1) {
         $html .= '<li class="page-item"><a class="page-link" href="' . $baseUrl . '&page=1">1</a></li>';
         if ($start > 2) {
             $html .= '<li class="page-item disabled"><span class="page-link">...</span></li>';
         }
     }
-    
+
     for ($i = $start; $i <= $end; $i++) {
         $active = $i === $currentPage ? ' active' : '';
         $html .= '<li class="page-item' . $active . '"><a class="page-link" href="' . $baseUrl . '&page=' . $i . '">' . $i . '</a></li>';
     }
-    
+
     if ($end < $totalPages) {
         if ($end < $totalPages - 1) {
             $html .= '<li class="page-item disabled"><span class="page-link">...</span></li>';
         }
         $html .= '<li class="page-item"><a class="page-link" href="' . $baseUrl . '&page=' . $totalPages . '">' . $totalPages . '</a></li>';
     }
-    
+
     // Next button
     $nextDisabled = $currentPage >= $totalPages ? ' disabled' : '';
     $nextUrl = $currentPage < $totalPages ? $baseUrl . '&page=' . ($currentPage + 1) : '#';
     $html .= '<li class="page-item' . $nextDisabled . '"><a class="page-link" href="' . $nextUrl . '">Next</a></li>';
-    
+
     $html .= '</ul></nav>';
-    
+
     return $html;
+}
+
+
+/**
+ * Check whether a controller is currently active.
+ */
+function isActive(string $controller): string
+{
+    $currentController =
+        $_GET['controller'] ?? 'Dashboard';
+
+    return strtolower($currentController)
+        === strtolower($controller)
+        ? 'active'
+        : '';
 }
 
 /**
@@ -346,7 +439,8 @@ function pagination(int $currentPage, int $totalPages, string $baseUrl): string 
  * 
  * @return bool  True if logged in, false otherwise
  */
-function isLoggedIn(): bool {
+function isLoggedIn(): bool
+{
     return isset($_SESSION['user_id']) && !empty($_SESSION['user_id']);
 }
 
@@ -359,7 +453,8 @@ function isLoggedIn(): bool {
  * 
  * @return bool  True if admin, false otherwise
  */
-function isAdmin(): bool {
+function isAdmin(): bool
+{
     return isLoggedIn() && isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin';
 }
 
@@ -372,7 +467,8 @@ function isAdmin(): bool {
  * 
  * @return int|null  User ID or null if not logged in
  */
-function getCurrentUserId(): ?int {
+function getCurrentUserId(): ?int
+{
     return isLoggedIn() ? (int) $_SESSION['user_id'] : null;
 }
 
@@ -385,7 +481,8 @@ function getCurrentUserId(): ?int {
  * 
  * @return void
  */
-function requireLogin(): void {
+function requireLogin(): void
+{
     if (!isLoggedIn()) {
         flash('Please login to access this page.', 'warning');
         redirect(url('Auth', 'login'));
@@ -401,7 +498,8 @@ function requireLogin(): void {
  * 
  * @return void
  */
-function requireAdmin(): void {
+function requireAdmin(): void
+{
     requireLogin();
     if (!isAdmin()) {
         flash('You do not have permission to access this page.', 'danger');
@@ -418,7 +516,8 @@ function requireAdmin(): void {
  * 
  * @return string  CSRF token
  */
-function csrfToken(): string {
+function csrfToken(): string
+{
     if (empty($_SESSION['csrf_token'])) {
         $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
     }
@@ -435,7 +534,8 @@ function csrfToken(): string {
  * @param string $token  Submitted token
  * @return bool          True if valid, false otherwise
  */
-function verifyCsrfToken(string $token): bool {
+function verifyCsrfToken(string $token): bool
+{
     return isset($_SESSION['csrf_token']) && hash_equals($_SESSION['csrf_token'], $token);
 }
 
@@ -449,17 +549,18 @@ function verifyCsrfToken(string $token): bool {
  * @param array $errors  Array of error messages
  * @return string        HTML error display
  */
-function displayErrors(array $errors): string {
+function displayErrors(array $errors): string
+{
     if (empty($errors)) {
         return '';
     }
-    
+
     $html = '<div class="alert alert-danger"><ul class="mb-0">';
     foreach ($errors as $error) {
         $html .= '<li>' . htmlspecialchars($error) . '</li>';
     }
     $html .= '</ul></div>';
-    
+
     return $html;
 }
 
@@ -473,7 +574,8 @@ function displayErrors(array $errors): string {
  * @param string $email  Email to validate
  * @return bool          True if valid, false otherwise
  */
-function isValidEmail(string $email): bool {
+function isValidEmail(string $email): bool
+{
     return filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
 }
 
@@ -487,7 +589,8 @@ function isValidEmail(string $email): bool {
  * @param mixed $value  Value to check
  * @return bool         True if not empty, false otherwise
  */
-function isRequired($value): bool {
+function isRequired($value): bool
+{
     return !empty(trim((string) $value));
 }
 
@@ -501,18 +604,19 @@ function isRequired($value): bool {
  * @param string $text  Text to slugify
  * @return string       URL-friendly slug
  */
-function slugify(string $text): string {
+function slugify(string $text): string
+{
     $text = preg_replace('~[^\pL\d]+~u', '-', $text);
     $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
     $text = preg_replace('~[^-\w]+~', '', $text);
     $text = trim($text, '-');
     $text = preg_replace('~-+~', '-', $text);
     $text = strtolower($text);
-    
+
     if (empty($text)) {
         return 'n-a';
     }
-    
+
     return $text;
 }
 
@@ -526,7 +630,8 @@ function slugify(string $text): string {
  * @param int $length  String length
  * @return string      Random string
  */
-function randomString(int $length = 10): string {
+function randomString(int $length = 10): string
+{
     return substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, $length);
 }
 
@@ -540,7 +645,8 @@ function randomString(int $length = 10): string {
  * @param int|float $number  Number to format
  * @return string            Formatted number
  */
-function formatNumber($number): string {
+function formatNumber($number): string
+{
     return number_format((float) $number);
 }
 
@@ -555,24 +661,25 @@ function formatNumber($number): string {
  * @param int   $size    Star size in pixels
  * @return string        HTML star rating
  */
-function starRating(float $rating, int $size = 16): string {
+function starRating(float $rating, int $size = 16): string
+{
     $html = '<span class="star-rating">';
     $fullStars = floor($rating);
     $halfStar = ($rating - $fullStars) >= 0.5;
     $emptyStars = 5 - $fullStars - ($halfStar ? 1 : 0);
-    
+
     for ($i = 0; $i < $fullStars; $i++) {
         $html .= '<i class="bi bi-star-fill text-warning" style="font-size:' . $size . 'px"></i>';
     }
-    
+
     if ($halfStar) {
         $html .= '<i class="bi bi-star-half text-warning" style="font-size:' . $size . 'px"></i>';
     }
-    
+
     for ($i = 0; $i < $emptyStars; $i++) {
         $html .= '<i class="bi bi-star text-warning" style="font-size:' . $size . 'px"></i>';
     }
-    
+
     $html .= '</span>';
     return $html;
 }
@@ -587,14 +694,15 @@ function starRating(float $rating, int $size = 16): string {
  * @param string $level  Experience level
  * @return string        HTML badge
  */
-function experienceBadge(string $level): string {
+function experienceBadge(string $level): string
+{
     $colors = [
         'Beginner'     => 'bg-success',
         'Intermediate' => 'bg-info',
         'Advanced'     => 'bg-warning',
         'Expert'       => 'bg-danger'
     ];
-    
+
     $color = $colors[$level] ?? 'bg-secondary';
     return '<span class="badge ' . $color . '">' . $level . '</span>';
 }
@@ -609,7 +717,8 @@ function experienceBadge(string $level): string {
  * @param string $status  Exchange status
  * @return string         HTML badge
  */
-function exchangeStatusBadge(string $status): string {
+function exchangeStatusBadge(string $status): string
+{
     $colors = [
         'pending'     => 'bg-warning',
         'accepted'    => 'bg-info',
@@ -618,7 +727,7 @@ function exchangeStatusBadge(string $status): string {
         'declined'    => 'bg-danger',
         'cancelled'   => 'bg-secondary'
     ];
-    
+
     $color = $colors[$status] ?? 'bg-secondary';
     $label = ucwords(str_replace('_', ' ', $status));
     return '<span class="badge ' . $color . '">' . $label . '</span>';
@@ -634,7 +743,8 @@ function exchangeStatusBadge(string $status): string {
  * @param int $score  Match score (0-100)
  * @return string     HTML badge
  */
-function matchScoreBadge(int $score): string {
+function matchScoreBadge(int $score): string
+{
     if ($score >= 80) {
         $color = 'bg-success';
     } elseif ($score >= 60) {
@@ -644,7 +754,7 @@ function matchScoreBadge(int $score): string {
     } else {
         $color = 'bg-secondary';
     }
-    
+
     return '<span class="badge ' . $color . '">' . $score . '% Match</span>';
 }
 
@@ -658,18 +768,19 @@ function matchScoreBadge(int $score): string {
  * @param string $type  Notification type
  * @return string       Icon class
  */
-function notificationIcon(string $type): string {
+function notificationIcon(string $type): string
+{
     $icons = [
         'match'             => 'bi-people-fill',
         'message'           => 'bi-chat-dots-fill',
         'exchange_request'  => 'bi-arrow-left-right',
         'exchange_accepted' => 'bi-check-circle-fill',
         'exchange_declined' => 'bi-x-circle-fill',
-        'exchange_completed'=> 'bi-trophy-fill',
+        'exchange_completed' => 'bi-trophy-fill',
         'review'            => 'bi-star-fill',
         'system'            => 'bi-bell-fill'
     ];
-    
+
     return $icons[$type] ?? 'bi-bell-fill';
 }
 
@@ -683,18 +794,19 @@ function notificationIcon(string $type): string {
  * @param string $type  Notification type
  * @return string       Color class
  */
-function notificationColor(string $type): string {
+function notificationColor(string $type): string
+{
     $colors = [
         'match'             => 'primary',
         'message'           => 'info',
         'exchange_request'  => 'warning',
         'exchange_accepted' => 'success',
         'exchange_declined' => 'danger',
-        'exchange_completed'=> 'success',
+        'exchange_completed' => 'success',
         'review'            => 'warning',
         'system'            => 'secondary'
     ];
-    
+
     return $colors[$type] ?? 'secondary';
 }
 
@@ -708,7 +820,8 @@ function notificationColor(string $type): string {
  * @param string $text  Text to escape
  * @return string       Escaped text
  */
-function e(string $text): string {
+function e(string $text): string
+{
     return htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
 }
 
@@ -723,7 +836,8 @@ function e(string $text): string {
  * @param string $default  Default value
  * @return string          Setting value
  */
-function getSetting(string $key, string $default = ''): string {
+function getSetting(string $key, string $default = ''): string
+{
     try {
         $db = Database::getConnection();
         $stmt = $db->prepare("SELECT setting_value FROM settings WHERE setting_key = :key");
@@ -745,7 +859,8 @@ function getSetting(string $key, string $default = ''): string {
  * @param string $title  Page title
  * @return void
  */
-function setPageTitle(string $title): void {
+function setPageTitle(string $title): void
+{
     $GLOBALS['page_title'] = $title;
 }
 
@@ -758,7 +873,7 @@ function setPageTitle(string $title): void {
  * 
  * @return string  Page title
  */
-function getPageTitle(): string {
+function getPageTitle(): string
+{
     return $GLOBALS['page_title'] ?? APP_NAME;
 }
-?>

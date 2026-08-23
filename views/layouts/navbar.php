@@ -693,19 +693,3 @@ if (
     </div>
 
 </nav>
-
-<?php
-/**
- * Check whether a controller is currently active.
- */
-function isActive(string $controller): string
-{
-    $currentController =
-        $_GET['controller'] ?? 'Dashboard';
-
-    return strtolower($currentController)
-        === strtolower($controller)
-        ? 'active'
-        : '';
-}
-?>

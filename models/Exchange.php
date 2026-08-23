@@ -616,21 +616,30 @@ class Exchange
     {
         try {
             $sql = "
-                SELECT COUNT(*) as total 
-                FROM exchange_requests 
-                WHERE (requester_id = :user_id OR receiver_id = :user_id)
-            ";
-            $params = [':user_id' => $userId];
+            SELECT COUNT(*) AS total
+            FROM exchange_requests
+            WHERE (
+                requester_id = :requester_id
+                OR receiver_id = :receiver_id
+            )
+        ";
 
-            if (!empty($status)) {
+            $params = [
+                ':requester_id' => $userId,
+                ':receiver_id' => $userId
+            ];
+
+            if ($status !== '') {
                 $sql .= " AND status = :status";
                 $params[':status'] = $status;
             }
 
             $stmt = $this->db->prepare($sql);
             $stmt->execute($params);
-            $result = $stmt->fetch();
-            return (int) $result['total'];
+
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            return (int) ($result['total'] ?? 0);
         } catch (PDOException $e) {
             error_log("Count User Exchanges Error: " . $e->getMessage());
             return 0;

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ============================================================================
  * AJAX Message Handler
@@ -65,13 +66,21 @@ switch ($action) {
             if ($sender) {
                 $notificationModel->notifyNewMessage($receiverId, $userId, $sender['full_name']);
             }
+            $newMessage = $messageModel->getById($messageId);
 
             echo json_encode([
                 'success' => true,
                 'message' => 'Message sent',
                 'message_id' => $messageId,
-                'created_at' => timeAgo(date('Y-m-d H:i:s'))
+                'created_at' => $newMessage['created_at'] ?? null
             ]);
+
+            // echo json_encode([
+            //     'success' => true,
+            //     'message' => 'Message sent',
+            //     'message_id' => $messageId,
+            //     'created_at' => date('g:i A')
+            // ]);
         } else {
             echo json_encode(['success' => false, 'message' => 'Failed to send message']);
         }
@@ -102,7 +111,7 @@ switch ($action) {
                 'id' => $msg['id'],
                 'sender_id' => $msg['sender_id'],
                 'content' => nl2br(e($msg['content'])),
-                'created_at' => timeAgo($msg['created_at']),
+                'created_at' => $msg['created_at'],
                 'is_me' => $msg['sender_id'] == $userId
             ];
         }
@@ -138,4 +147,3 @@ switch ($action) {
         echo json_encode(['success' => false, 'message' => 'Invalid action']);
         break;
 }
-?>

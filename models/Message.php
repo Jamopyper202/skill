@@ -176,38 +176,7 @@ class Message
             return [];
         }
     }
-    // public function getConversation(int $userId1, int $userId2, int $limit = 50, int $offset = 0): array
-    // {
-    //     try {
-    //         $stmt = $this->db->prepare("
-    //             SELECT m.*,
-    //                 s.full_name as sender_name,
-    //                 r.full_name as receiver_name,
-    //                 s_p.profile_picture as sender_picture,
-    //                 r_p.profile_picture as receiver_picture
-    //             FROM messages m
-    //             JOIN users s ON m.sender_id = s.id
-    //             JOIN users r ON m.receiver_id = r.id
-    //             LEFT JOIN profiles s_p ON s.id = s_p.user_id
-    //             LEFT JOIN profiles r_p ON r.id = r_p.user_id
-    //             WHERE (m.sender_id = :id1 AND m.receiver_id = :id2)
-    //                OR (m.sender_id = :id2 AND m.receiver_id = :id1)
-    //             ORDER BY m.created_at ASC
-    //             LIMIT :limit OFFSET :offset
-    //         ");
 
-    //         $stmt->bindValue(':id1', $userId1);
-    //         $stmt->bindValue(':id2', $userId2);
-    //         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
-    //         $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
-    //         $stmt->execute();
-
-    //         return $stmt->fetchAll();
-    //     } catch (PDOException $e) {
-    //         error_log("Get Conversation Error: " . $e->getMessage());
-    //         return [];
-    //     }
-    // }
 
     /**
      * =========================================================================
@@ -318,51 +287,6 @@ class Message
             return [];
         }
     }
-    // public function getRecentConversations(int $userId): array
-    // {
-    //     try {
-    //         $stmt = $this->db->prepare("
-    //             SELECT 
-    //                 m.*,
-    //                 CASE 
-    //                     WHEN m.sender_id = :user_id THEN m.receiver_id 
-    //                     ELSE m.sender_id 
-    //                 END as other_user_id,
-    //                 CASE 
-    //                     WHEN m.sender_id = :user_id THEN r.full_name 
-    //                     ELSE s.full_name 
-    //                 END as other_user_name,
-    //                 CASE 
-    //                     WHEN m.sender_id = :user_id THEN r_p.profile_picture 
-    //                     ELSE s_p.profile_picture 
-    //                 END as other_user_picture,
-    //                 CASE 
-    //                     WHEN m.sender_id = :user_id THEN 'sent' 
-    //                     ELSE 'received' 
-    //                 END as direction,
-    //                 (SELECT COUNT(*) FROM messages 
-    //                  WHERE sender_id = other_user_id AND receiver_id = :user_id AND is_read = 0
-    //                 ) as unread_count
-    //             FROM messages m
-    //             JOIN users s ON m.sender_id = s.id
-    //             JOIN users r ON m.receiver_id = r.id
-    //             LEFT JOIN profiles s_p ON s.id = s_p.user_id
-    //             LEFT JOIN profiles r_p ON r.id = r_p.user_id
-    //             WHERE m.id IN (
-    //                 SELECT MAX(id) FROM messages
-    //                 WHERE sender_id = :user_id OR receiver_id = :user_id
-    //                 GROUP BY LEAST(sender_id, receiver_id), GREATEST(sender_id, receiver_id)
-    //             )
-    //             ORDER BY m.created_at DESC
-    //         ");
-
-    //         $stmt->execute([':user_id' => $userId]);
-    //         return $stmt->fetchAll();
-    //     } catch (PDOException $e) {
-    //         error_log("Get Recent Conversations Error: " . $e->getMessage());
-    //         return [];
-    //     }
-    // }
 
     /**
      * =========================================================================
@@ -377,34 +301,7 @@ class Message
      * @param int $lastMsgId  Last message ID already displayed
      * @return array
      */
-    // public function getNewMessages(int $userId1, int $userId2, int $lastMsgId): array
-    // {
-    //     try {
-    //         $stmt = $this->db->prepare("
-    //             SELECT m.*,
-    //                 s.full_name as sender_name,
-    //                 s_p.profile_picture as sender_picture
-    //             FROM messages m
-    //             JOIN users s ON m.sender_id = s.id
-    //             LEFT JOIN profiles s_p ON s.id = s_p.user_id
-    //             WHERE m.id > :last_id
-    //             AND ((m.sender_id = :id1 AND m.receiver_id = :id2)
-    //               OR (m.sender_id = :id2 AND m.receiver_id = :id1))
-    //             ORDER BY m.created_at ASC
-    //         ");
 
-    //         $stmt->execute([
-    //             ':last_id' => $lastMsgId,
-    //             ':id1'     => $userId1,
-    //             ':id2'     => $userId2
-    //         ]);
-
-    //         return $stmt->fetchAll();
-    //     } catch (PDOException $e) {
-    //         error_log("Get New Messages Error: " . $e->getMessage());
-    //         return [];
-    //     }
-    // }
     public function getNewMessages(
         int $userId1,
         int $userId2,
@@ -502,23 +399,7 @@ class Message
      * @param int $userId     User ID (must be sender or receiver)
      * @return bool
      */
-    // public function delete(int $messageId, int $userId): bool {
-    //     try {
-    //         $stmt = $this->db->prepare("
-    //             DELETE FROM messages 
-    //             WHERE id = :id AND (sender_id = :user_id OR receiver_id = :user_id)
-    //         ");
 
-    //         return $stmt->execute([
-    //             ':id'      => $messageId,
-    //             ':user_id' => $userId
-    //         ]);
-
-    //     } catch (PDOException $e) {
-    //         error_log("Delete Message Error: " . $e->getMessage());
-    //         return false;
-    //     }
-    // }
     public function delete(int $messageId, int $userId): bool
     {
         try {

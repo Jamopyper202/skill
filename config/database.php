@@ -63,5 +63,7 @@ if (!class_exists('Database')) {
         {
             throw new Exception("Cannot unserialize singleton");
         }
+
+        
     }
 }

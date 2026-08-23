@@ -195,7 +195,7 @@ require_once BASE_PATH . '/views/layouts/header.php';
                 </div>
                 <div class="list-group list-group-flush">
                     <?php if ($match['status'] === 'pending'): ?>
-                        <?php if ($match['my_response'] === 'pending'): ?>
+                       <?php if (($match['my_response'] ?? 'pending') === 'pending'): ?>
                             <a href="<?php echo url('Match', 'accept', ['id' => $match['id']]); ?>" class="list-group-item list-group-item-action text-success">
                                 <i class="bi bi-check-circle me-2"></i>Accept Match
                             </a>

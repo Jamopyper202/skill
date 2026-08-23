@@ -17,6 +17,7 @@ $otherUserAvatar = $otherUser['profile_picture'] ?? 'download.png';
 
 <?php require_once __DIR__ . '/../layouts/header.php'; ?>
 <?php require_once __DIR__ . '/../layouts/navbar.php'; ?>
+ 
 
 <div class="container-fluid py-0" style="height: calc(100vh - 76px);">
 
@@ -130,8 +131,7 @@ $otherUserAvatar = $otherUser['profile_picture'] ?? 'download.png';
                                     <?php endif; ?>
 
                                 </div>
-
-
+                              
                                 <!-- Conversation Info -->
                                 <div class="flex-grow-1 min-width-0">
 
@@ -143,7 +143,6 @@ $otherUserAvatar = $otherUser['profile_picture'] ?? 'download.png';
                                             style="max-width: 130px;">
                                             <?php echo e($convName); ?>
                                         </h6>
-
                                         <?php if (!empty($convTime)): ?>
 
                                             <small
@@ -190,161 +189,6 @@ $otherUserAvatar = $otherUser['profile_picture'] ?? 'download.png';
             </div>
 
         </div>
-        <!-- <div
-            class="col-lg-3 col-md-4 border-end bg-white d-none d-md-block"
-            style="height: 100%; overflow-y: auto;">
-
-            <div class="p-3 border-bottom">
-
-                <div class="d-flex align-items-center justify-content-between mb-3">
-
-                    <h5 class="mb-0">
-                        <i class="fas fa-comments text-primary me-2"></i>
-                        Messages
-                    </h5>
-
-                    <a
-                        href="<?php echo url('Message', 'index'); ?>"
-                        class="btn btn-sm btn-outline-secondary">
-                       <i class="bi bi-arrow-left"></i>
-                    </a>
-
-                </div>
-
-                <div class="input-group">
-
-                    <span class="input-group-text bg-light border-end-0">
-                        <i class="fas fa-search text-muted"></i>
-                    </span>
-
-                    <input
-                        type="text"
-                        class="form-control bg-light border-start-0"
-                        id="conversationSearch"
-                        placeholder="Search...">
-
-                </div>
-
-            </div>
-
-
-            <div
-                class="list-group list-group-flush"
-                id="conversationsList">
-
-                <?php if (empty($conversations)): ?>
-
-                    <div class="text-center py-4">
-                        <i class="fas fa-inbox fa-2x text-muted mb-2"></i>
-                        <p class="text-muted small mb-0">
-                            No conversations
-                        </p>
-                    </div>
-
-                <?php else: ?>
-
-                    <?php foreach ($conversations as $conv): ?>
-
-                        <?php
-                        $convUserId = (int) ($conv['other_user_id'] ?? 0);
-                        $convName = $conv['other_user_name'] ?? 'Unknown User';
-                        $convAvatar = $conv['other_user_picture'] ?? 'download.png';
-                        $convUnread = (int) ($conv['unread_count'] ?? 0);
-                        $convContent = $conv['content'] ?? '';
-                        $convCreatedAt = $conv['created_at'] ?? '';
-
-                        $isActive = $otherUserId === $convUserId;
-                        ?>
-
-                        <a
-                            href="<?php echo url('Message', 'conversation', [
-                                        'user_id' => $convUserId
-                                    ]); ?>"
-                            class="list-group-item list-group-item-action
-                            <?php echo $isActive ? 'active' : ''; ?> py-3"
-                            data-name="<?php echo e(strtolower($convName)); ?>">
-
-                            <div class="d-flex align-items-center">
-
-                                <div class="position-relative flex-shrink-0">
-
-                                    <img
-                                        src="<?php echo e(
-                                                    uploadUrl($convAvatar)
-                                                ); ?>"
-                                        alt="<?php echo e($convName); ?>"
-                                        class="rounded-circle me-2"
-                                        width="40"
-                                        height="40"
-                                        style="object-fit: cover;">
-
-                                    <?php if ($convUnread > 0 && !$isActive): ?>
-
-                                        <span
-                                            class="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-danger"
-                                            style="font-size: 0.6rem;">
-                                            <?php echo $convUnread; ?>
-                                        </span>
-
-                                    <?php endif; ?>
-
-                                </div>
-
-
-                                <div class="flex-grow-1 min-width-0">
-
-                                    <div class="d-flex justify-content-between align-items-center">
-
-                                        <h6
-                                            class="mb-0 text-truncate small
-                                            <?php echo $isActive ? '' : 'text-dark'; ?>"
-                                            style="max-width: 120px;">
-                                            <?php echo e($convName); ?>
-                                        </h6>
-
-                                        <?php if (!empty($convCreatedAt)): ?>
-
-                                            <small
-                                                class="<?php echo $isActive
-                                                            ? 'text-white-50'
-                                                            : 'text-muted'; ?>"
-                                                style="font-size: 0.7rem;">
-                                                <?php echo timeAgo($convCreatedAt); ?>
-                                            </small>
-
-                                        <?php endif; ?>
-
-                                    </div>
-
-
-                                    <p
-                                        class="mb-0 text-truncate small
-                                        <?php
-                                        echo $isActive
-                                            ? 'text-white-50'
-                                            : ($convUnread > 0
-                                                ? 'fw-bold text-dark'
-                                                : 'text-muted');
-                                        ?>"
-                                        style="max-width: 160px;">
-                                        <?php echo e(
-                                            truncate($convContent, 30)
-                                        ); ?>
-                                    </p>
-
-                                </div>
-
-                            </div>
-
-                        </a>
-
-                    <?php endforeach; ?>
-
-                <?php endif; ?>
-
-            </div>
-
-        </div> -->
 
 
         <!-- Chat Area -->
@@ -642,6 +486,59 @@ $otherUserAvatar = $otherUser['profile_picture'] ?? 'download.png';
             ? (int) end($messages)['id']
             : 0; ?>;
 
+    // time ago function
+
+    function messageTimeAgo(timestamp) {
+        if (!timestamp) {
+            return '';
+        }
+
+        // Treat database timestamp as Pacific time.
+        const iso = timestamp.replace(' ', 'T') + '-08:00';
+
+        const messageDate = new Date(iso);
+        const now = new Date();
+
+        if (isNaN(messageDate.getTime())) {
+            return '';
+        }
+
+        const seconds = Math.floor(
+            (now.getTime() - messageDate.getTime()) / 1000
+        );
+
+        if (seconds < 0) {
+            return 'Just now';
+        }
+
+        if (seconds < 60) {
+            return 'Just now';
+        }
+
+        if (seconds < 3600) {
+            const minutes = Math.floor(seconds / 60);
+
+            return minutes === 1 ?
+                '1 min ago' :
+                minutes + ' mins ago';
+        }
+
+        if (seconds < 86400) {
+            const hours = Math.floor(seconds / 3600);
+
+            return hours === 1 ?
+                '1 hr ago' :
+                hours + ' hrs ago';
+        }
+
+        const days = Math.floor(seconds / 86400);
+
+        if (days === 1) {
+            return 'Yesterday';
+        }
+
+        return days + ' days ago';
+    }
 
     /* Auto resize */
     if (messageInput) {
@@ -689,19 +586,17 @@ $otherUserAvatar = $otherUser['profile_picture'] ?? 'download.png';
             sendBtn.disabled = true;
 
 
-            fetch(
-                    '<?php echo url('Message', 'send'); ?>', {
-                        method: 'POST',
+            fetch('<?= BASE_URL ?>/ajax/messages.php?action=send', {
+                    method: 'POST',
 
-                        headers: {
-                            'X-Requested-With': 'XMLHttpRequest'
-                        },
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
 
-                        body: new URLSearchParams(
-                            new FormData(form)
-                        )
-                    }
-                )
+                    body: new URLSearchParams(
+                        new FormData(form)
+                    )
+                })
 
                 .then(response => response.json())
 
@@ -712,7 +607,8 @@ $otherUserAvatar = $otherUser['profile_picture'] ?? 'download.png';
                         appendMessage(
                             content,
                             true,
-                            data.message_id
+                            data.message_id,
+                            data.created_at
                         );
 
                         messageInput.value = '';
@@ -760,7 +656,8 @@ $otherUserAvatar = $otherUser['profile_picture'] ?? 'download.png';
     function appendMessage(
         content,
         isMine,
-        messageId = 0
+        messageId = 0,
+        createdAt = ''
     ) {
 
         const div =
@@ -812,7 +709,8 @@ $otherUserAvatar = $otherUser['profile_picture'] ?? 'download.png';
 
         time.style.fontSize = '0.7rem';
 
-        time.textContent = 'Just now';
+        // time.textContent = createdAt || '';
+        time.textContent = messageTimeAgo(createdAt);
 
         footer.appendChild(time);
 
@@ -877,6 +775,12 @@ $otherUserAvatar = $otherUser['profile_picture'] ?? 'download.png';
                              * Don't append our own message
                              * twice.
                              */
+                            // console.log(
+                            //     'RAW MESSAGE:',
+                            //     msg.id,
+                            //     msg.created_at
+                            // );
+
                             if (
                                 Number(msg.id) >
                                 Number(lastMessageId)
@@ -884,8 +788,9 @@ $otherUserAvatar = $otherUser['profile_picture'] ?? 'download.png';
 
                                 appendMessage(
                                     msg.content,
-                                    false,
-                                    msg.id
+                                    msg.is_me,
+                                    msg.id,
+                                    msg.created_at
                                 );
 
                                 lastMessageId =

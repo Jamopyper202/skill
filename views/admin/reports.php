@@ -5,7 +5,7 @@ $activeTab = 'admin';
 ?>
 
 <?php require_once __DIR__ . '/../layouts/header.php'; ?>
-<?php require_once __DIR__ . '/../layouts/navbar.php'; ?>
+<?php require_once __DIR__ . '/../layouts/admin-navbar.php'; ?>
 
 <div class="container-fluid py-4">
     <h1 class="h2 mb-4"><i class="fas fa-flag text-danger me-2"></i>Manage Reports</h1>

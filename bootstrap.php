@@ -34,7 +34,10 @@ ini_set('error_log', __DIR__ . '/logs/error.log');
 // TIMEZONE CONFIGURATION
 // ============================================================================
 // Set the default timezone for all date/time functions
-date_default_timezone_set('Africa/Lagos');
+// date_default_timezone_set('Africa/Lagos');
+
+date_default_timezone_set('America/Los_Angeles');
+
 
 // ============================================================================
 // SESSION CONFIGURATION
@@ -118,8 +121,10 @@ define('ALLOWED_IMAGE_TYPES', ['image/jpeg', 'image/png', 'image/gif']);
 spl_autoload_register(function (string $className): void {
     // Define the directories to search for classes
     $directories = [
+        BASE_PATH . '/config/',
         BASE_PATH . '/models/',      // Search models directory first
-        BASE_PATH . '/controllers/'  // Then search controllers directory
+        BASE_PATH . '/controllers/' 
+ // Then search controllers directory
     ];
 
     // Loop through each directory to find the class file

@@ -540,7 +540,15 @@ $pageTitle = $GLOBALS['page_title'] ?? APP_NAME;
     <?php require_once BASE_PATH . '/views/layouts/flash-messages.php'; ?>
 
     <!-- Navigation -->
-    <?php require_once BASE_PATH . '/views/layouts/navbar.php'; ?>
+    <?php if (isLoggedIn() && isAdmin()): ?>
+
+        <?php require_once __DIR__ . '/admin-navbar.php'; ?>
+
+    <?php else: ?>
+
+        <?php require_once __DIR__ . '/navbar.php'; ?>
+
+    <?php endif; ?>
 
     <!-- Main Content -->
     <main class="py-4">

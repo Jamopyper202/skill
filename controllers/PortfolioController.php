@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ============================================================================
  * Portfolio Controller
@@ -12,7 +13,8 @@
  * ============================================================================
  */
 
-class PortfolioController {
+class PortfolioController
+{
     /**
      * Portfolio model instance
      * @var Portfolio
@@ -22,7 +24,8 @@ class PortfolioController {
     /**
      * Constructor
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->portfolioModel = new Portfolio();
     }
 
@@ -33,7 +36,8 @@ class PortfolioController {
      * 
      * Display all portfolio items for the logged-in user.
      */
-    public function index(): void {
+    public function index(): void
+    {
         $userId = getCurrentUserId();
 
         // Get user's portfolio items
@@ -50,7 +54,8 @@ class PortfolioController {
      * 
      * Handle form to add a new portfolio item.
      */
-    public function add(): void {
+    public function add(): void
+    {
         $userId = getCurrentUserId();
         $errors = [];
 
@@ -115,7 +120,8 @@ class PortfolioController {
      * 
      * Handle form to edit an existing portfolio item.
      */
-    public function edit(): void {
+    public function edit(): void
+    {
         $userId = getCurrentUserId();
         $portfolioId = (int) ($_GET['id'] ?? 0);
 
@@ -192,7 +198,8 @@ class PortfolioController {
      * 
      * Delete a portfolio item.
      */
-    public function delete(): void {
+    public function delete(): void
+    {
         $userId = getCurrentUserId();
         $portfolioId = (int) ($_GET['id'] ?? 0);
 
@@ -212,30 +219,37 @@ class PortfolioController {
      * 
      * View another user's portfolio.
      */
-    public function view(): void {
+    public function view(): void
+    {
         $userId = (int) ($_GET['user_id'] ?? 0);
 
-        if ($userId === 0) {
+        if ($userId <= 0) {
             flash('Invalid user.', 'danger');
             redirect(url('Dashboard', 'index'));
             return;
         }
 
-        // Get user's portfolio items
-        $items = $this->portfolioModel->getByUserId($userId);
+        // Get portfolio items
+        $portfolioItems = $this->portfolioModel->getByUserId($userId);
 
-        // Get user info
+        // Get user information
         $userModel = new User();
-        $user = $userModel->findById($userId);
+        $portfolioUser = $userModel->findById($userId);
 
-        if (!$user || !$user['is_active']) {
+        if (!$portfolioUser || empty($portfolioUser['is_active'])) {
             flash('User not found.', 'danger');
             redirect(url('Dashboard', 'index'));
             return;
         }
 
-        setPageTitle($user['full_name'] . "'s Portfolio");
+        // Get profile information
+        $profileModel = new Profile();
+        $portfolioProfile = $profileModel->getByUserId($userId);
+
+        setPageTitle(
+            ($portfolioUser['full_name'] ?? 'User') . "'s Portfolio"
+        );
+
         require_once BASE_PATH . '/views/portfolio/view.php';
     }
 }
-?>

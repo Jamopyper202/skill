@@ -45,72 +45,180 @@ class AuthController {
      * Display login form and handle login submission.
      */
     
-    public function login(): void {
-        // Redirect if already logged in
-        if (isLoggedIn()) {
+  public function login(): void
+{
+    // Redirect if already logged in
+    if (isLoggedIn()) {
+
+        if (($_SESSION['user_role'] ?? 'user') === 'admin') {
+            redirect(url('Admin', 'index'));
+        } else {
             redirect(url('Dashboard', 'index'));
-            return;
         }
 
-        $errors = [];
-
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $email = trim($_POST['email'] ?? '');
-            $password = $_POST['password'] ?? '';
-            $remember = isset($_POST['remember']);
-
-            // Validation
-            if (!isRequired($email)) {
-                $errors[] = 'Email is required.';
-            } elseif (!isValidEmail($email)) {
-                $errors[] = 'Please enter a valid email address.';
-            }
-
-            if (!isRequired($password)) {
-                $errors[] = 'Password is required.';
-            }
-
-            if (empty($errors)) {
-                // Attempt login
-                $user = $this->userModel->findByEmail($email);
-
-                if ($user && $this->userModel->verifyPassword($password, $user['password'])) {
-                    // Check if account is active
-                    if (!$user['is_active']) {
-                        $errors[] = 'Your account has been deactivated. Please contact support.';
-                    } else {
-                        // Set session data
-                        $_SESSION['user_id'] = $user['id'];
-                        $_SESSION['user_name'] = $user['full_name'];
-                        $_SESSION['user_email'] = $user['email'];
-                        $_SESSION['user_role'] = $user['role'];
-                        $_SESSION['user_picture'] = $user['profile_picture'] ?? 'download.png';
-                        $_SESSION['user_active'] = $user['is_active'];
-
-                        // Update last login
-                        $this->userModel->updateLastLogin($user['id']);
-
-                        flash('Welcome back, ' . $user['full_name'] . '!', 'success');
-
-                        // Redirect to intended page or dashboard
-                        $redirect = $_SESSION['redirect_after_login'] ?? url('Dashboard', 'index');
-                        unset($_SESSION['redirect_after_login']);
-                        redirect($redirect);
-                        return;
-                    }
-                } else {
-                    $errors[] = 'Invalid email or password.';
-                }
-            }
-
-            // Store old input on error
-            storeOldInput(['email' => $email]);
-        }
-
-        setPageTitle('Login');
-        require_once BASE_PATH . '/views/auth/login.php';
+        return;
     }
 
+    $errors = [];
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+        $email = trim($_POST['email'] ?? '');
+        $password = $_POST['password'] ?? '';
+        $remember = isset($_POST['remember']);
+
+
+        // =========================================================
+        // VALIDATION
+        // =========================================================
+
+        if (!isRequired($email)) {
+
+            $errors[] = 'Email is required.';
+
+        } elseif (!isValidEmail($email)) {
+
+            $errors[] = 'Please enter a valid email address.';
+        }
+
+
+        if (!isRequired($password)) {
+
+            $errors[] = 'Password is required.';
+        }
+
+
+        // =========================================================
+        // LOGIN
+        // =========================================================
+
+        if (empty($errors)) {
+
+            $user = $this->userModel->findByEmail($email);
+
+
+            if (
+                $user &&
+                $this->userModel->verifyPassword(
+                    $password,
+                    $user['password']
+                )
+            ) {
+
+                // =====================================================
+                // CHECK ACCOUNT STATUS
+                // =====================================================
+
+                if (!$user['is_active']) {
+
+                    $errors[] =
+                        'Your account has been deactivated. Please contact support.';
+
+                } else {
+
+                    // =================================================
+                    // SET SESSION
+                    // =================================================
+
+                    $_SESSION['user_id'] =
+                        $user['id'];
+
+                    $_SESSION['user_name'] =
+                        $user['full_name'];
+
+                    $_SESSION['user_email'] =
+                        $user['email'];
+
+                    $_SESSION['user_role'] =
+                        $user['role'];
+
+                    $_SESSION['user_picture'] =
+                        $user['profile_picture']
+                        ?? 'download.png';
+
+                    $_SESSION['user_active'] =
+                        $user['is_active'];
+
+
+                    // =================================================
+                    // UPDATE LAST LOGIN
+                    // =================================================
+
+                    $this->userModel->updateLastLogin(
+                        $user['id']
+                    );
+
+
+                    // =================================================
+                    // WELCOME MESSAGE
+                    // =================================================
+
+                    flash(
+                        'Welcome back, ' .
+                        $user['full_name'] .
+                        '!',
+                        'success'
+                    );
+
+
+                    // =================================================
+                    // ROLE-BASED REDIRECT
+                    // =================================================
+
+                    if ($user['role'] === 'admin') {
+
+                        // Admin → Admin Dashboard
+                        $redirect = url(
+                            'Admin',
+                            'index'
+                        );
+
+                    } else {
+
+                        // Normal User → User Dashboard
+                        $redirect = $_SESSION[
+                            'redirect_after_login'
+                        ] ?? url(
+                            'Dashboard',
+                            'index'
+                        );
+                    }
+
+
+                    // Remove intended redirect
+                    unset(
+                        $_SESSION['redirect_after_login']
+                    );
+
+
+                    redirect($redirect);
+
+                    return;
+                }
+
+            } else {
+
+                $errors[] =
+                    'Invalid email or password.';
+            }
+        }
+
+
+        // =========================================================
+        // STORE OLD INPUT
+        // =========================================================
+
+        storeOldInput([
+            'email' => $email
+        ]);
+    }
+
+
+    setPageTitle('Login');
+
+    require_once BASE_PATH .
+        '/views/auth/login.php';
+}
     /**
      * =========================================================================
      * REGISTER PAGE

@@ -5654,3 +5654,236 @@ Stack trace:
 #1 C:\laragon\www\skillswap\index.php(201): AdminController->categories()
 #2 {main}
   thrown in C:\laragon\www\skillswap\views\admin\categories.php on line 35
+[22-Aug-2026 18:25:47 America/Los_Angeles] PHP Fatal error:  Uncaught Error: Call to undefined function generateCsrfToken() in C:\laragon\www\skillswap\views\admin\users.php:444
+Stack trace:
+#0 C:\laragon\www\skillswap\controllers\AdminController.php(115): require_once()
+#1 C:\laragon\www\skillswap\index.php(201): AdminController->users()
+#2 {main}
+  thrown in C:\laragon\www\skillswap\views\admin\users.php on line 444
+[22-Aug-2026 21:38:30 America/Los_Angeles] Routing Error: SQLSTATE[HY093]: Invalid parameter number
+[22-Aug-2026 21:48:46 America/Los_Angeles] Routing Error: SQLSTATE[HY093]: Invalid parameter number
+[23-Aug-2026 10:30:25 America/Los_Angeles] Routing Error: SQLSTATE[HY093]: Invalid parameter number
+[23-Aug-2026 10:30:36 America/Los_Angeles] Routing Error: SQLSTATE[HY093]: Invalid parameter number
+[23-Aug-2026 10:35:34 America/Los_Angeles] Routing Error: SQLSTATE[HY093]: Invalid parameter number
+[23-Aug-2026 10:35:41 America/Los_Angeles] Routing Error: SQLSTATE[HY093]: Invalid parameter number
+[23-Aug-2026 10:35:50 America/Los_Angeles] Routing Error: SQLSTATE[HY093]: Invalid parameter number
+[23-Aug-2026 12:20:17 America/Los_Angeles] PHP Warning:  Undefined variable $serialNumber in C:\laragon\www\skillswap\views\admin\users.php on line 225
+[23-Aug-2026 12:20:17 America/Los_Angeles] PHP Warning:  Undefined variable $serialNumber in C:\laragon\www\skillswap\views\admin\users.php on line 225
+[23-Aug-2026 12:20:17 America/Los_Angeles] PHP Warning:  Undefined variable $serialNumber in C:\laragon\www\skillswap\views\admin\users.php on line 225
+[23-Aug-2026 12:20:17 America/Los_Angeles] PHP Warning:  Undefined variable $serialNumber in C:\laragon\www\skillswap\views\admin\users.php on line 225
+[23-Aug-2026 12:20:17 America/Los_Angeles] PHP Warning:  Undefined variable $serialNumber in C:\laragon\www\skillswap\views\admin\users.php on line 225
+[23-Aug-2026 12:20:17 America/Los_Angeles] PHP Warning:  Undefined variable $serialNumber in C:\laragon\www\skillswap\views\admin\users.php on line 225
+[23-Aug-2026 12:20:17 America/Los_Angeles] PHP Warning:  Undefined variable $serialNumber in C:\laragon\www\skillswap\views\admin\users.php on line 225
+[23-Aug-2026 12:20:17 America/Los_Angeles] PHP Warning:  Undefined variable $serialNumber in C:\laragon\www\skillswap\views\admin\users.php on line 225
+[23-Aug-2026 12:20:17 America/Los_Angeles] PHP Warning:  Undefined variable $serialNumber in C:\laragon\www\skillswap\views\admin\users.php on line 225
+[23-Aug-2026 12:20:17 America/Los_Angeles] PHP Warning:  Undefined variable $serialNumber in C:\laragon\www\skillswap\views\admin\users.php on line 225
+[23-Aug-2026 13:00:06 America/Los_Angeles] PHP Fatal error:  Uncaught Error: Call to undefined function generateCsrfToken() in C:\laragon\www\skillswap\views\admin\skills.php:280
+Stack trace:
+#0 C:\laragon\www\skillswap\controllers\AdminController.php(745): require_once()
+#1 C:\laragon\www\skillswap\index.php(212): AdminController->skills()
+#2 {main}
+  thrown in C:\laragon\www\skillswap\views\admin\skills.php on line 280
+[23-Aug-2026 13:02:45 America/Los_Angeles] PHP Fatal error:  Uncaught Error: Call to undefined function generateCsrfToken() in C:\laragon\www\skillswap\views\admin\add-skill.php:89
+Stack trace:
+#0 C:\laragon\www\skillswap\controllers\AdminController.php(793): require_once()
+#1 C:\laragon\www\skillswap\index.php(212): AdminController->addSkill()
+#2 {main}
+  thrown in C:\laragon\www\skillswap\views\admin\add-skill.php on line 89
+[23-Aug-2026 13:11:13 America/Los_Angeles] PHP Fatal error:  Uncaught Error: Call to undefined function generateCsrfToken() in C:\laragon\www\skillswap\views\admin\edit-skill.php:101
+Stack trace:
+#0 C:\laragon\www\skillswap\controllers\AdminController.php(852): require_once()
+#1 C:\laragon\www\skillswap\index.php(212): AdminController->editSkill()
+#2 {main}
+  thrown in C:\laragon\www\skillswap\views\admin\edit-skill.php on line 101
+[23-Aug-2026 13:40:35 America/Los_Angeles] Routing Error: Action 'toggleSkill' not found in controller 'AdminController'.
+[23-Aug-2026 14:03:48 America/Los_Angeles] Routing Error: Action 'toggleSkill' not found in controller 'AdminController'.
+[23-Aug-2026 14:19:41 America/Los_Angeles] PHP Warning:  Undefined variable $skill in C:\laragon\www\skillswap\views\admin\edit-category.php on line 30
+[23-Aug-2026 14:19:41 America/Los_Angeles] PHP Warning:  Trying to access array offset on null in C:\laragon\www\skillswap\views\admin\edit-category.php on line 30
+[23-Aug-2026 14:19:41 America/Los_Angeles] PHP Fatal error:  Uncaught Error: Call to undefined function generateCsrfToken() in C:\laragon\www\skillswap\views\admin\edit-category.php:31
+Stack trace:
+#0 C:\laragon\www\skillswap\controllers\AdminController.php(1246): require_once()
+#1 C:\laragon\www\skillswap\index.php(212): AdminController->editCategory()
+#2 {main}
+  thrown in C:\laragon\www\skillswap\views\admin\edit-category.php on line 31
+[23-Aug-2026 14:45:21 America/Los_Angeles] PHP Fatal error:  Cannot redeclare AdminController::editSkill() in C:\laragon\www\skillswap\controllers\AdminController.php on line 1288
+[23-Aug-2026 15:33:22 America/Los_Angeles] Routing Error: Action 'exchanges' not found in controller 'AdminController'.
+[23-Aug-2026 15:40:19 America/Los_Angeles] Routing Error: Action 'exchanges' not found in controller 'AdminController'.
+[23-Aug-2026 15:40:24 America/Los_Angeles] PHP Fatal error:  Uncaught Error: Call to undefined function generateCsrfToken() in C:\laragon\www\skillswap\views\admin\reviews.php:40
+Stack trace:
+#0 C:\laragon\www\skillswap\controllers\AdminController.php(1850): require_once()
+#1 C:\laragon\www\skillswap\index.php(212): AdminController->reviews()
+#2 {main}
+  thrown in C:\laragon\www\skillswap\views\admin\reviews.php on line 40
+[23-Aug-2026 15:40:30 America/Los_Angeles] PHP Warning:  Undefined array key "reported_user_name" in C:\laragon\www\skillswap\views\admin\reports.php on line 33
+[23-Aug-2026 15:40:30 America/Los_Angeles] PHP Fatal error:  Uncaught TypeError: e(): Argument #1 ($text) must be of type string, null given, called in C:\laragon\www\skillswap\views\admin\reports.php on line 33 and defined in C:\laragon\www\skillswap\helpers\functions.php:823
+Stack trace:
+#0 C:\laragon\www\skillswap\views\admin\reports.php(33): e(NULL)
+#1 C:\laragon\www\skillswap\controllers\AdminController.php(1924): require_once('C:\\laragon\\www\\...')
+#2 C:\laragon\www\skillswap\index.php(212): AdminController->reports()
+#3 {main}
+  thrown in C:\laragon\www\skillswap\helpers\functions.php on line 823
+[23-Aug-2026 15:40:32 America/Los_Angeles] PHP Fatal error:  Uncaught Error: Call to undefined function generateCsrfToken() in C:\laragon\www\skillswap\views\admin\reviews.php:40
+Stack trace:
+#0 C:\laragon\www\skillswap\controllers\AdminController.php(1850): require_once()
+#1 C:\laragon\www\skillswap\index.php(212): AdminController->reviews()
+#2 {main}
+  thrown in C:\laragon\www\skillswap\views\admin\reviews.php on line 40
+[23-Aug-2026 15:49:25 America/Los_Angeles] PHP Warning:  Undefined array key "reported_user_name" in C:\laragon\www\skillswap\views\admin\reports.php on line 33
+[23-Aug-2026 15:49:25 America/Los_Angeles] PHP Fatal error:  Uncaught TypeError: e(): Argument #1 ($text) must be of type string, null given, called in C:\laragon\www\skillswap\views\admin\reports.php on line 33 and defined in C:\laragon\www\skillswap\helpers\functions.php:823
+Stack trace:
+#0 C:\laragon\www\skillswap\views\admin\reports.php(33): e(NULL)
+#1 C:\laragon\www\skillswap\controllers\AdminController.php(1808): require_once('C:\\laragon\\www\\...')
+#2 C:\laragon\www\skillswap\index.php(212): AdminController->reports()
+#3 {main}
+  thrown in C:\laragon\www\skillswap\helpers\functions.php on line 823
+[23-Aug-2026 15:51:23 America/Los_Angeles] PHP Fatal error:  Uncaught Error: Call to undefined function generateCsrfToken() in C:\laragon\www\skillswap\views\admin\view-report.php:332
+Stack trace:
+#0 C:\laragon\www\skillswap\controllers\AdminController.php(1838): require_once()
+#1 C:\laragon\www\skillswap\index.php(212): AdminController->viewReport()
+#2 {main}
+  thrown in C:\laragon\www\skillswap\views\admin\view-report.php on line 332
+[23-Aug-2026 15:51:32 America/Los_Angeles] PHP Fatal error:  Uncaught Error: Call to undefined function generateCsrfToken() in C:\laragon\www\skillswap\views\admin\view-report.php:332
+Stack trace:
+#0 C:\laragon\www\skillswap\controllers\AdminController.php(1838): require_once()
+#1 C:\laragon\www\skillswap\index.php(212): AdminController->viewReport()
+#2 {main}
+  thrown in C:\laragon\www\skillswap\views\admin\view-report.php on line 332
+[23-Aug-2026 15:57:16 America/Los_Angeles] Routing Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'rep.username' in 'field list'
+[23-Aug-2026 15:57:26 America/Los_Angeles] Routing Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'rep.username' in 'field list'
+[23-Aug-2026 15:58:25 America/Los_Angeles] Routing Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'rep.username' in 'field list'
+[23-Aug-2026 16:26:30 America/Los_Angeles] Routing Error: Action 'sendNotification' not found in controller 'AdminController'.
+[23-Aug-2026 16:29:28 America/Los_Angeles] Routing Error: Action 'notification' not found in controller 'AdminController'.
+[23-Aug-2026 16:30:49 America/Los_Angeles] Routing Error: Action 'notification' not found in controller 'AdminController'.
+[23-Aug-2026 16:36:38 America/Los_Angeles] PHP Warning:  Undefined array key "id" in C:\laragon\www\skillswap\views\layouts\admin-navbar.php on line 333
+[23-Aug-2026 16:36:38 America/Los_Angeles] PHP Warning:  Undefined array key "id" in C:\laragon\www\skillswap\views\layouts\admin-navbar.php on line 333
+[23-Aug-2026 16:36:38 America/Los_Angeles] PHP Warning:  Undefined array key "id" in C:\laragon\www\skillswap\views\layouts\admin-navbar.php on line 333
+[23-Aug-2026 16:36:38 America/Los_Angeles] PHP Warning:  Undefined array key "id" in C:\laragon\www\skillswap\views\layouts\admin-navbar.php on line 333
+[23-Aug-2026 16:36:38 America/Los_Angeles] PHP Warning:  Undefined array key "id" in C:\laragon\www\skillswap\views\layouts\admin-navbar.php on line 333
+[23-Aug-2026 16:36:38 America/Los_Angeles] PHP Warning:  Undefined array key "id" in C:\laragon\www\skillswap\views\layouts\admin-navbar.php on line 333
+[23-Aug-2026 16:36:38 America/Los_Angeles] PHP Warning:  Undefined array key "id" in C:\laragon\www\skillswap\views\layouts\admin-navbar.php on line 333
+[23-Aug-2026 16:36:38 America/Los_Angeles] PHP Warning:  Undefined array key "id" in C:\laragon\www\skillswap\views\layouts\admin-navbar.php on line 333
+[23-Aug-2026 16:36:38 America/Los_Angeles] PHP Warning:  Undefined array key "id" in C:\laragon\www\skillswap\views\layouts\admin-navbar.php on line 333
+[23-Aug-2026 16:36:38 America/Los_Angeles] PHP Warning:  Undefined array key "id" in C:\laragon\www\skillswap\views\layouts\admin-navbar.php on line 333
+[23-Aug-2026 16:49:44 America/Los_Angeles] Autoload failed: Class 'NotificationsController' not found in models/ or controllers/
+[23-Aug-2026 16:49:44 America/Los_Angeles] Routing Error: Controller 'NotificationsController' not found.
+[23-Aug-2026 16:51:01 America/Los_Angeles] Routing Error: SQLSTATE[HY093]: Invalid parameter number
+[23-Aug-2026 16:52:25 America/Los_Angeles] Autoload failed: Class 'NotificationsController' not found in models/ or controllers/
+[23-Aug-2026 16:52:25 America/Los_Angeles] Routing Error: Controller 'NotificationsController' not found.
+[23-Aug-2026 16:52:31 America/Los_Angeles] Autoload failed: Class 'NotificationsController' not found in models/ or controllers/
+[23-Aug-2026 16:52:31 America/Los_Angeles] Routing Error: Controller 'NotificationsController' not found.
+[23-Aug-2026 17:02:42 America/Los_Angeles] Autoload failed: Class 'NotificationsController' not found in models/ or controllers/
+[23-Aug-2026 17:02:42 America/Los_Angeles] Routing Error: Controller 'NotificationsController' not found.
+[23-Aug-2026 17:02:52 America/Los_Angeles] Autoload failed: Class 'NotificationsController' not found in models/ or controllers/
+[23-Aug-2026 17:02:52 America/Los_Angeles] Routing Error: Controller 'NotificationsController' not found.
+[23-Aug-2026 17:03:35 America/Los_Angeles] Routing Error: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '// LIMIT 10' at line 11
+[23-Aug-2026 17:09:59 America/Los_Angeles] Autoload failed: Class 'NotificationsController' not found in models/ or controllers/
+[23-Aug-2026 17:09:59 America/Los_Angeles] Routing Error: Controller 'NotificationsController' not found.
+[23-Aug-2026 17:11:13 America/Los_Angeles] Autoload failed: Class 'NotificationsController' not found in models/ or controllers/
+[23-Aug-2026 17:11:13 America/Los_Angeles] Routing Error: Controller 'NotificationsController' not found.
+[23-Aug-2026 17:11:42 America/Los_Angeles] Autoload failed: Class 'NotificationsController' not found in models/ or controllers/
+[23-Aug-2026 17:11:42 America/Los_Angeles] Routing Error: Controller 'NotificationsController' not found.
+[24-Aug-2026 03:30:57 America/Los_Angeles] PHP Warning:  Undefined variable $notificationId in C:\laragon\www\skillswap\views\layouts\admin-navbar.php on line 422
+[24-Aug-2026 03:30:57 America/Los_Angeles] PHP Deprecated:  urlencode(): Passing null to parameter #1 ($string) of type string is deprecated in C:\laragon\www\skillswap\helpers\functions.php on line 165
+[24-Aug-2026 03:38:02 America/Los_Angeles] PHP Warning:  Undefined variable $notificationId in C:\laragon\www\skillswap\views\layouts\admin-navbar.php on line 422
+[24-Aug-2026 03:38:02 America/Los_Angeles] PHP Deprecated:  urlencode(): Passing null to parameter #1 ($string) of type string is deprecated in C:\laragon\www\skillswap\helpers\functions.php on line 165
+[24-Aug-2026 03:38:18 America/Los_Angeles] PHP Warning:  Undefined variable $notificationId in C:\laragon\www\skillswap\views\layouts\admin-navbar.php on line 422
+[24-Aug-2026 03:38:18 America/Los_Angeles] PHP Deprecated:  urlencode(): Passing null to parameter #1 ($string) of type string is deprecated in C:\laragon\www\skillswap\helpers\functions.php on line 165
+[24-Aug-2026 03:38:21 America/Los_Angeles] PHP Warning:  Undefined variable $notificationId in C:\laragon\www\skillswap\views\layouts\admin-navbar.php on line 422
+[24-Aug-2026 03:38:21 America/Los_Angeles] PHP Deprecated:  urlencode(): Passing null to parameter #1 ($string) of type string is deprecated in C:\laragon\www\skillswap\helpers\functions.php on line 165
+[24-Aug-2026 03:38:57 America/Los_Angeles] PHP Warning:  Undefined variable $notificationId in C:\laragon\www\skillswap\views\layouts\admin-navbar.php on line 422
+[24-Aug-2026 03:38:57 America/Los_Angeles] PHP Deprecated:  urlencode(): Passing null to parameter #1 ($string) of type string is deprecated in C:\laragon\www\skillswap\helpers\functions.php on line 165
+[24-Aug-2026 03:39:02 America/Los_Angeles] PHP Warning:  Undefined variable $notificationId in C:\laragon\www\skillswap\views\layouts\admin-navbar.php on line 422
+[24-Aug-2026 03:39:02 America/Los_Angeles] PHP Deprecated:  urlencode(): Passing null to parameter #1 ($string) of type string is deprecated in C:\laragon\www\skillswap\helpers\functions.php on line 165
+[24-Aug-2026 03:39:26 America/Los_Angeles] PHP Warning:  Undefined variable $notificationId in C:\laragon\www\skillswap\views\layouts\admin-navbar.php on line 422
+[24-Aug-2026 03:39:26 America/Los_Angeles] PHP Deprecated:  urlencode(): Passing null to parameter #1 ($string) of type string is deprecated in C:\laragon\www\skillswap\helpers\functions.php on line 165
+[24-Aug-2026 03:39:46 America/Los_Angeles] PHP Warning:  Undefined variable $notificationId in C:\laragon\www\skillswap\views\layouts\admin-navbar.php on line 422
+[24-Aug-2026 03:39:46 America/Los_Angeles] PHP Deprecated:  urlencode(): Passing null to parameter #1 ($string) of type string is deprecated in C:\laragon\www\skillswap\helpers\functions.php on line 165
+[24-Aug-2026 03:40:01 America/Los_Angeles] PHP Warning:  Undefined variable $notificationId in C:\laragon\www\skillswap\views\layouts\admin-navbar.php on line 422
+[24-Aug-2026 03:40:01 America/Los_Angeles] PHP Deprecated:  urlencode(): Passing null to parameter #1 ($string) of type string is deprecated in C:\laragon\www\skillswap\helpers\functions.php on line 165
+[24-Aug-2026 03:40:49 America/Los_Angeles] Routing Error: Action 'exchanges' not found in controller 'AdminController'.
+[24-Aug-2026 03:40:53 America/Los_Angeles] PHP Warning:  Undefined variable $notificationId in C:\laragon\www\skillswap\views\layouts\admin-navbar.php on line 422
+[24-Aug-2026 03:40:53 America/Los_Angeles] PHP Deprecated:  urlencode(): Passing null to parameter #1 ($string) of type string is deprecated in C:\laragon\www\skillswap\helpers\functions.php on line 165
+[24-Aug-2026 03:40:56 America/Los_Angeles] PHP Warning:  Undefined variable $notificationId in C:\laragon\www\skillswap\views\layouts\admin-navbar.php on line 422
+[24-Aug-2026 03:40:56 America/Los_Angeles] PHP Deprecated:  urlencode(): Passing null to parameter #1 ($string) of type string is deprecated in C:\laragon\www\skillswap\helpers\functions.php on line 165
+[24-Aug-2026 03:41:07 America/Los_Angeles] PHP Warning:  Undefined variable $notificationId in C:\laragon\www\skillswap\views\layouts\admin-navbar.php on line 422
+[24-Aug-2026 03:41:07 America/Los_Angeles] PHP Deprecated:  urlencode(): Passing null to parameter #1 ($string) of type string is deprecated in C:\laragon\www\skillswap\helpers\functions.php on line 165
+[24-Aug-2026 03:41:18 America/Los_Angeles] PHP Warning:  Undefined variable $notificationId in C:\laragon\www\skillswap\views\layouts\admin-navbar.php on line 422
+[24-Aug-2026 03:41:18 America/Los_Angeles] PHP Deprecated:  urlencode(): Passing null to parameter #1 ($string) of type string is deprecated in C:\laragon\www\skillswap\helpers\functions.php on line 165
+[24-Aug-2026 03:42:01 America/Los_Angeles] PHP Warning:  Undefined variable $notificationId in C:\laragon\www\skillswap\views\layouts\admin-navbar.php on line 422
+[24-Aug-2026 03:42:01 America/Los_Angeles] PHP Deprecated:  urlencode(): Passing null to parameter #1 ($string) of type string is deprecated in C:\laragon\www\skillswap\helpers\functions.php on line 165
+[24-Aug-2026 03:42:12 America/Los_Angeles] PHP Warning:  Undefined variable $notificationId in C:\laragon\www\skillswap\views\layouts\admin-navbar.php on line 422
+[24-Aug-2026 03:42:12 America/Los_Angeles] PHP Deprecated:  urlencode(): Passing null to parameter #1 ($string) of type string is deprecated in C:\laragon\www\skillswap\helpers\functions.php on line 165
+[24-Aug-2026 03:42:23 America/Los_Angeles] PHP Warning:  Undefined variable $notificationId in C:\laragon\www\skillswap\views\layouts\admin-navbar.php on line 422
+[24-Aug-2026 03:42:23 America/Los_Angeles] PHP Deprecated:  urlencode(): Passing null to parameter #1 ($string) of type string is deprecated in C:\laragon\www\skillswap\helpers\functions.php on line 165
+[24-Aug-2026 03:43:15 America/Los_Angeles] PHP Warning:  Undefined variable $notificationId in C:\laragon\www\skillswap\views\layouts\admin-navbar.php on line 422
+[24-Aug-2026 03:43:15 America/Los_Angeles] PHP Deprecated:  urlencode(): Passing null to parameter #1 ($string) of type string is deprecated in C:\laragon\www\skillswap\helpers\functions.php on line 165
+[24-Aug-2026 08:43:07 America/Los_Angeles] PHP Warning:  Undefined variable $notificationId in C:\laragon\www\skillswap\views\layouts\admin-navbar.php on line 422
+[24-Aug-2026 08:43:07 America/Los_Angeles] PHP Deprecated:  urlencode(): Passing null to parameter #1 ($string) of type string is deprecated in C:\laragon\www\skillswap\helpers\functions.php on line 165
+[24-Aug-2026 08:43:08 America/Los_Angeles] PHP Warning:  Undefined variable $notificationId in C:\laragon\www\skillswap\views\layouts\admin-navbar.php on line 422
+[24-Aug-2026 08:43:08 America/Los_Angeles] PHP Deprecated:  urlencode(): Passing null to parameter #1 ($string) of type string is deprecated in C:\laragon\www\skillswap\helpers\functions.php on line 165
+[24-Aug-2026 08:43:10 America/Los_Angeles] PHP Warning:  Undefined variable $notificationId in C:\laragon\www\skillswap\views\layouts\admin-navbar.php on line 422
+[24-Aug-2026 08:43:10 America/Los_Angeles] PHP Deprecated:  urlencode(): Passing null to parameter #1 ($string) of type string is deprecated in C:\laragon\www\skillswap\helpers\functions.php on line 165
+[24-Aug-2026 08:43:13 America/Los_Angeles] PHP Warning:  Undefined variable $notificationId in C:\laragon\www\skillswap\views\layouts\admin-navbar.php on line 422
+[24-Aug-2026 08:43:13 America/Los_Angeles] PHP Deprecated:  urlencode(): Passing null to parameter #1 ($string) of type string is deprecated in C:\laragon\www\skillswap\helpers\functions.php on line 165
+[24-Aug-2026 08:43:14 America/Los_Angeles] PHP Warning:  Undefined variable $notificationId in C:\laragon\www\skillswap\views\layouts\admin-navbar.php on line 422
+[24-Aug-2026 08:43:14 America/Los_Angeles] PHP Deprecated:  urlencode(): Passing null to parameter #1 ($string) of type string is deprecated in C:\laragon\www\skillswap\helpers\functions.php on line 165
+[24-Aug-2026 08:43:15 America/Los_Angeles] PHP Warning:  Undefined variable $notificationId in C:\laragon\www\skillswap\views\layouts\admin-navbar.php on line 422
+[24-Aug-2026 08:43:15 America/Los_Angeles] PHP Deprecated:  urlencode(): Passing null to parameter #1 ($string) of type string is deprecated in C:\laragon\www\skillswap\helpers\functions.php on line 165
+[24-Aug-2026 08:43:16 America/Los_Angeles] Routing Error: Action 'exchanges' not found in controller 'AdminController'.
+[24-Aug-2026 08:43:19 America/Los_Angeles] PHP Warning:  Undefined variable $notificationId in C:\laragon\www\skillswap\views\layouts\admin-navbar.php on line 422
+[24-Aug-2026 08:43:19 America/Los_Angeles] PHP Deprecated:  urlencode(): Passing null to parameter #1 ($string) of type string is deprecated in C:\laragon\www\skillswap\helpers\functions.php on line 165
+[24-Aug-2026 08:43:20 America/Los_Angeles] PHP Warning:  Undefined variable $notificationId in C:\laragon\www\skillswap\views\layouts\admin-navbar.php on line 422
+[24-Aug-2026 08:43:20 America/Los_Angeles] PHP Deprecated:  urlencode(): Passing null to parameter #1 ($string) of type string is deprecated in C:\laragon\www\skillswap\helpers\functions.php on line 165
+[24-Aug-2026 08:43:24 America/Los_Angeles] PHP Warning:  Undefined variable $notificationId in C:\laragon\www\skillswap\views\layouts\admin-navbar.php on line 422
+[24-Aug-2026 08:43:24 America/Los_Angeles] PHP Deprecated:  urlencode(): Passing null to parameter #1 ($string) of type string is deprecated in C:\laragon\www\skillswap\helpers\functions.php on line 165
+[24-Aug-2026 08:43:28 America/Los_Angeles] PHP Warning:  Undefined variable $notificationId in C:\laragon\www\skillswap\views\layouts\admin-navbar.php on line 422
+[24-Aug-2026 08:43:28 America/Los_Angeles] PHP Deprecated:  urlencode(): Passing null to parameter #1 ($string) of type string is deprecated in C:\laragon\www\skillswap\helpers\functions.php on line 165
+[24-Aug-2026 08:43:32 America/Los_Angeles] PHP Warning:  Undefined variable $notificationId in C:\laragon\www\skillswap\views\layouts\admin-navbar.php on line 422
+[24-Aug-2026 08:43:32 America/Los_Angeles] PHP Deprecated:  urlencode(): Passing null to parameter #1 ($string) of type string is deprecated in C:\laragon\www\skillswap\helpers\functions.php on line 165
+[24-Aug-2026 08:47:59 America/Los_Angeles] PHP Warning:  Undefined variable $notificationId in C:\laragon\www\skillswap\views\layouts\admin-navbar.php on line 422
+[24-Aug-2026 08:47:59 America/Los_Angeles] PHP Deprecated:  urlencode(): Passing null to parameter #1 ($string) of type string is deprecated in C:\laragon\www\skillswap\helpers\functions.php on line 165
+[24-Aug-2026 08:48:03 America/Los_Angeles] PHP Warning:  Undefined variable $notificationId in C:\laragon\www\skillswap\views\layouts\admin-navbar.php on line 422
+[24-Aug-2026 08:48:03 America/Los_Angeles] PHP Deprecated:  urlencode(): Passing null to parameter #1 ($string) of type string is deprecated in C:\laragon\www\skillswap\helpers\functions.php on line 165
+[24-Aug-2026 08:48:05 America/Los_Angeles] PHP Warning:  Undefined variable $notificationId in C:\laragon\www\skillswap\views\layouts\admin-navbar.php on line 422
+[24-Aug-2026 08:48:05 America/Los_Angeles] PHP Deprecated:  urlencode(): Passing null to parameter #1 ($string) of type string is deprecated in C:\laragon\www\skillswap\helpers\functions.php on line 165
+[24-Aug-2026 08:48:09 America/Los_Angeles] PHP Warning:  Undefined variable $notificationId in C:\laragon\www\skillswap\views\layouts\admin-navbar.php on line 422
+[24-Aug-2026 08:48:09 America/Los_Angeles] PHP Deprecated:  urlencode(): Passing null to parameter #1 ($string) of type string is deprecated in C:\laragon\www\skillswap\helpers\functions.php on line 165
+[24-Aug-2026 08:48:11 America/Los_Angeles] PHP Warning:  Undefined variable $notificationId in C:\laragon\www\skillswap\views\layouts\admin-navbar.php on line 422
+[24-Aug-2026 08:48:11 America/Los_Angeles] PHP Deprecated:  urlencode(): Passing null to parameter #1 ($string) of type string is deprecated in C:\laragon\www\skillswap\helpers\functions.php on line 165
+[24-Aug-2026 08:48:12 America/Los_Angeles] PHP Warning:  Undefined variable $notificationId in C:\laragon\www\skillswap\views\layouts\admin-navbar.php on line 422
+[24-Aug-2026 08:48:12 America/Los_Angeles] PHP Deprecated:  urlencode(): Passing null to parameter #1 ($string) of type string is deprecated in C:\laragon\www\skillswap\helpers\functions.php on line 165
+[24-Aug-2026 08:48:13 America/Los_Angeles] PHP Warning:  Undefined variable $notificationId in C:\laragon\www\skillswap\views\layouts\admin-navbar.php on line 422
+[24-Aug-2026 08:48:13 America/Los_Angeles] PHP Deprecated:  urlencode(): Passing null to parameter #1 ($string) of type string is deprecated in C:\laragon\www\skillswap\helpers\functions.php on line 165
+[24-Aug-2026 08:48:15 America/Los_Angeles] Routing Error: Action 'exchanges' not found in controller 'AdminController'.
+[24-Aug-2026 08:48:18 America/Los_Angeles] PHP Warning:  Undefined variable $notificationId in C:\laragon\www\skillswap\views\layouts\admin-navbar.php on line 422
+[24-Aug-2026 08:48:18 America/Los_Angeles] PHP Deprecated:  urlencode(): Passing null to parameter #1 ($string) of type string is deprecated in C:\laragon\www\skillswap\helpers\functions.php on line 165
+[24-Aug-2026 08:48:19 America/Los_Angeles] PHP Warning:  Undefined variable $notificationId in C:\laragon\www\skillswap\views\layouts\admin-navbar.php on line 422
+[24-Aug-2026 08:48:19 America/Los_Angeles] PHP Deprecated:  urlencode(): Passing null to parameter #1 ($string) of type string is deprecated in C:\laragon\www\skillswap\helpers\functions.php on line 165
+[24-Aug-2026 08:52:35 America/Los_Angeles] PHP Warning:  Undefined variable $notificationId in C:\laragon\www\skillswap\views\layouts\admin-navbar.php on line 422
+[24-Aug-2026 08:52:35 America/Los_Angeles] PHP Deprecated:  urlencode(): Passing null to parameter #1 ($string) of type string is deprecated in C:\laragon\www\skillswap\helpers\functions.php on line 165
+[24-Aug-2026 08:52:55 America/Los_Angeles] PHP Warning:  Undefined variable $notificationId in C:\laragon\www\skillswap\views\layouts\admin-navbar.php on line 422
+[24-Aug-2026 08:52:55 America/Los_Angeles] PHP Deprecated:  urlencode(): Passing null to parameter #1 ($string) of type string is deprecated in C:\laragon\www\skillswap\helpers\functions.php on line 165
+[24-Aug-2026 08:53:49 America/Los_Angeles] PHP Warning:  Undefined variable $notificationId in C:\laragon\www\skillswap\views\layouts\admin-navbar.php on line 422
+[24-Aug-2026 08:53:49 America/Los_Angeles] PHP Deprecated:  urlencode(): Passing null to parameter #1 ($string) of type string is deprecated in C:\laragon\www\skillswap\helpers\functions.php on line 165
+[24-Aug-2026 08:56:02 America/Los_Angeles] PHP Warning:  Undefined variable $notificationId in C:\laragon\www\skillswap\views\layouts\admin-navbar.php on line 422
+[24-Aug-2026 08:56:02 America/Los_Angeles] PHP Deprecated:  urlencode(): Passing null to parameter #1 ($string) of type string is deprecated in C:\laragon\www\skillswap\helpers\functions.php on line 165
+[24-Aug-2026 08:56:06 America/Los_Angeles] PHP Warning:  Undefined variable $notificationId in C:\laragon\www\skillswap\views\layouts\admin-navbar.php on line 422
+[24-Aug-2026 08:56:06 America/Los_Angeles] PHP Deprecated:  urlencode(): Passing null to parameter #1 ($string) of type string is deprecated in C:\laragon\www\skillswap\helpers\functions.php on line 165
+[24-Aug-2026 08:56:23 America/Los_Angeles] PHP Warning:  Undefined variable $notificationId in C:\laragon\www\skillswap\views\layouts\admin-navbar.php on line 422
+[24-Aug-2026 08:56:23 America/Los_Angeles] PHP Deprecated:  urlencode(): Passing null to parameter #1 ($string) of type string is deprecated in C:\laragon\www\skillswap\helpers\functions.php on line 165
+[24-Aug-2026 08:56:37 America/Los_Angeles] PHP Warning:  Undefined variable $notificationId in C:\laragon\www\skillswap\views\layouts\admin-navbar.php on line 422
+[24-Aug-2026 08:56:37 America/Los_Angeles] PHP Deprecated:  urlencode(): Passing null to parameter #1 ($string) of type string is deprecated in C:\laragon\www\skillswap\helpers\functions.php on line 165
+[24-Aug-2026 18:19:43 America/Los_Angeles] Routing Error: Action 'exchanges' not found in controller 'AdminController'.
+[24-Aug-2026 18:28:02 America/Los_Angeles] Routing Error: Action 'viewExchange' not found in controller 'AdminController'.
+[24-Aug-2026 18:34:02 America/Los_Angeles] PHP Fatal error:  Uncaught Error: Call to undefined function generateCsrfToken() in C:\laragon\www\skillswap\views\admin\view-exchange.php:522
+Stack trace:
+#0 C:\laragon\www\skillswap\controllers\AdminController.php(2980): require_once()
+#1 C:\laragon\www\skillswap\index.php(212): AdminController->viewExchange()
+#2 {main}
+  thrown in C:\laragon\www\skillswap\views\admin\view-exchange.php on line 522
+[24-Aug-2026 18:34:05 America/Los_Angeles] PHP Fatal error:  Uncaught Error: Call to undefined function generateCsrfToken() in C:\laragon\www\skillswap\views\admin\view-exchange.php:522
+Stack trace:
+#0 C:\laragon\www\skillswap\controllers\AdminController.php(2980): require_once()
+#1 C:\laragon\www\skillswap\index.php(212): AdminController->viewExchange()
+#2 {main}
+  thrown in C:\laragon\www\skillswap\views\admin\view-exchange.php on line 522

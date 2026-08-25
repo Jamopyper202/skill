@@ -1,21 +1,28 @@
 <?php
+
 /**
  * ============================================================================
  * SkillSwap Admin Navigation Bar
  * ============================================================================
  */
 
-$unreadNotifications = 0;
+
+
+$adminNotificationCount = 0;
+$adminRecentNotifications = [];
 
 if (isLoggedIn()) {
 
     $notifModel = new Notification();
 
-    $unreadNotifications =
-        (int) $notifModel->countUnread(
-            getCurrentUserId()
-        );
+    $adminRecentNotifications =
+        $notifModel->getAdminRecentNotifications(5);
+
+    $adminNotificationCount =
+        $notifModel->countAdminRecentNotifications();
 }
+
+
 
 
 /*
@@ -47,13 +54,9 @@ if (
              BRAND
         ========================================================== -->
 
-        <a
-            class="navbar-brand d-flex align-items-center"
-            href="<?= url('Admin', 'index') ?>">
+        <a class="navbar-brand d-flex align-items-center" href="<?= url('Admin', 'index') ?>">
 
-            <span
-                class="d-flex align-items-center justify-content-center me-2"
-                style="
+            <span class="d-flex align-items-center justify-content-center me-2" style="
                     width: 38px;
                     height: 38px;
                     border-radius: 10px;
@@ -70,9 +73,7 @@ if (
 
                 <?= e(APP_NAME) ?>
 
-                <small
-                    class="text-primary ms-1"
-                    style="font-size: .7rem;">
+                <small class="text-primary ms-1" style="font-size: .7rem;">
 
                     ADMIN
 
@@ -87,14 +88,8 @@ if (
              MOBILE TOGGLE
         ========================================================== -->
 
-        <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#adminNavbarNav"
-            aria-controls="adminNavbarNav"
-            aria-expanded="false"
-            aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNavbarNav"
+            aria-controls="adminNavbarNav" aria-expanded="false" aria-label="Toggle navigation">
 
             <i class="bi bi-list fs-4"></i>
 
@@ -105,9 +100,7 @@ if (
              NAVIGATION
         ========================================================== -->
 
-        <div
-            class="collapse navbar-collapse"
-            id="adminNavbarNav">
+        <div class="collapse navbar-collapse" id="adminNavbarNav">
 
 
             <ul class="navbar-nav me-auto ms-lg-3">
@@ -117,9 +110,7 @@ if (
 
                 <li class="nav-item">
 
-                    <a
-                        class="nav-link <?= isActive('Admin') ?>"
-                        href="<?= url('Admin', 'index') ?>">
+                    <a class="nav-link <?= isActive('Admin') ?>" href="<?= url('Admin', 'index') ?>">
 
                         <i class="bi bi-speedometer2 me-1"></i>
 
@@ -134,9 +125,7 @@ if (
 
                 <li class="nav-item">
 
-                    <a
-                        class="nav-link"
-                        href="<?= url('Admin', 'users') ?>">
+                    <a class="nav-link" href="<?= url('Admin', 'users') ?>">
 
                         <i class="bi bi-people-fill me-1"></i>
 
@@ -151,9 +140,7 @@ if (
 
                 <li class="nav-item">
 
-                    <a
-                        class="nav-link"
-                        href="<?= url('Admin', 'skills') ?>">
+                    <a class="nav-link" href="<?= url('Admin', 'skills') ?>">
 
                         <i class="bi bi-lightbulb-fill me-1"></i>
 
@@ -168,9 +155,7 @@ if (
 
                 <li class="nav-item">
 
-                    <a
-                        class="nav-link"
-                        href="<?= url('Admin', 'categories') ?>">
+                    <a class="nav-link" href="<?= url('Admin', 'categories') ?>">
 
                         <i class="bi bi-tags-fill me-1"></i>
 
@@ -185,9 +170,7 @@ if (
 
                 <li class="nav-item">
 
-                    <a
-                        class="nav-link"
-                        href="<?= url('Admin', 'exchanges') ?>">
+                    <a class="nav-link" href="<?= url('Admin', 'exchanges') ?>">
 
                         <i class="bi bi-arrow-left-right me-1"></i>
 
@@ -202,9 +185,7 @@ if (
 
                 <li class="nav-item">
 
-                    <a
-                        class="nav-link"
-                        href="<?= url('Admin', 'reviews') ?>">
+                    <a class="nav-link" href="<?= url('Admin', 'reviews') ?>">
 
                         <i class="bi bi-star-fill me-1"></i>
 
@@ -215,13 +196,12 @@ if (
                 </li>
 
 
+
                 <!-- Reports -->
 
                 <li class="nav-item">
 
-                    <a
-                        class="nav-link position-relative"
-                        href="<?= url('Admin', 'reports') ?>">
+                    <a class="nav-link position-relative" href="<?= url('Admin', 'reports') ?>">
 
                         <i class="bi bi-flag-fill me-1"></i>
 
@@ -229,6 +209,19 @@ if (
 
                     </a>
 
+                </li>
+
+
+                <!-- app settings    -->
+                <li class="nav-item">
+
+                    <a class="nav-link" href="<?= url('Admin', 'settings') ?>">
+
+                        <i class="bi bi-gear-fill me-1"></i>
+
+                        Settings
+
+                    </a>
                 </li>
 
             </ul>
@@ -240,8 +233,14 @@ if (
 
             <ul class="navbar-nav align-items-lg-center">
 
-
+                <?php
+                $recentNotifications = $recentNotifications ?? [];
+                $stats = $stats ?? ['unread' => 0];
+                ?>
                 <!-- Notifications -->
+
+                <!-- Admin Notifications -->
+                <!-- Admin Notifications -->
 
                 <li class="nav-item dropdown">
 
@@ -251,20 +250,20 @@ if (
                         role="button"
                         data-bs-toggle="dropdown"
                         aria-expanded="false"
-                        title="Notifications">
+                        title="Admin Notifications">
 
                         <i class="bi bi-bell-fill fs-5"></i>
 
 
-                        <?php if ($unreadNotifications > 0): ?>
+                        <?php if ($adminNotificationCount > 0): ?>
 
                             <span
                                 class="position-absolute top-0 start-100
-                                       translate-middle badge rounded-pill
-                                       bg-danger"
+                       translate-middle badge rounded-pill
+                       bg-danger"
                                 style="font-size: .6rem;">
 
-                                <?= $unreadNotifications ?>
+                                <?= (int) $adminNotificationCount ?>
 
                             </span>
 
@@ -275,22 +274,185 @@ if (
 
                     <div
                         class="dropdown-menu dropdown-menu-end
-                               notification-dropdown p-0 mt-2">
+               p-0 mt-2 shadow"
+                        style="width: 380px;">
 
-                        <div class="dropdown-header p-3">
+                        <!-- HEADER -->
 
-                            <strong>
-                                Notifications
-                            </strong>
+                        <div class="p-3">
 
-                            <?php if ($unreadNotifications > 0): ?>
+                            <div
+                                class="d-flex
+                       justify-content-between
+                       align-items-center">
 
-                                <small class="text-muted d-block">
+                                <div>
 
-                                    <?= $unreadNotifications ?>
-                                    unread
+                                    <strong>
+                                        Notifications
+                                    </strong>
 
-                                </small>
+                                    <small class="text-muted d-block">
+                                        Recent system notifications
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="dropdown-divider m-0"></div>
+
+
+                        <!-- NOTIFICATIONS -->
+
+                        <div
+                            style="
+                max-height: 400px;
+                overflow-y: auto;
+            ">
+
+                            <?php if (!empty($adminRecentNotifications)): ?>
+
+                                <?php foreach (
+                                    $adminRecentNotifications
+                                    as $notification
+                                ): ?>
+
+                                    <div class="px-3 py-3 border-bottom">
+
+                                        <div class="d-flex gap-3">
+
+                                            <!-- ICON -->
+
+                                            <div>
+
+                                                <span
+                                                    class="d-flex
+                                           align-items-center
+                                           justify-content-center
+                                           rounded-circle
+                                           bg-primary
+                                           text-white"
+                                                    style="
+                                        width: 40px;
+                                        height: 40px;
+                                    ">
+
+                                                    <i class="bi bi-bell-fill"></i>
+
+                                                </span>
+
+                                            </div>
+
+
+                                            <!-- CONTENT -->
+                                            <div class="flex-grow-1">
+
+                                                <strong class="small d-block mb-1">
+
+                                                    <?= e(
+                                                        $notification['title']
+                                                            ?? 'Notification'
+                                                    ) ?>
+
+                                                </strong>
+
+
+                                                <p
+                                                    class="small
+               text-muted
+               mb-2">
+
+                                                    <?= e(
+                                                        truncate(
+                                                            $notification['message'] ?? '',
+                                                            80
+                                                        )
+                                                    ) ?>
+
+                                                </p>
+
+
+                                                <div
+                                                    class="d-flex
+               justify-content-between
+               align-items-center">
+
+                                                    <small class="text-muted">
+
+                                                        <?= !empty($notification['created_at'])
+                                                            ? timeAgo(
+                                                                $notification['created_at']
+                                                            )
+                                                            : ''
+                                                        ?>
+
+                                                    </small>
+
+
+                                                    <span class="badge bg-secondary">
+
+                                                        <?= (int) (
+                                                            $notification['recipient_count']
+                                                            ?? 0
+                                                        ) ?>
+
+                                                        recipients
+
+                                                    </span>
+
+                                                </div>
+
+
+                                                <!-- VIEW BUTTON -->
+
+                                                <div class="text-end mt-2">
+
+                                                    <a
+                                                        href="<?= url(
+                                                                    'Admin',
+                                                                    'viewNotification',
+                                                                    [
+                                                                        'id' => (int) $notification['id']
+                                                                    ]
+                                                                ) ?>"
+                                                        class="btn btn-sm btn-outline-primary">
+
+                                                        <i class="bi bi-eye me-1"></i>
+                                                        View
+
+                                                    </a>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                <?php endforeach; ?>
+
+
+                            <?php else: ?>
+
+                                <div
+                                    class="text-center
+                           text-muted
+                           py-5">
+
+                                    <i
+                                        class="bi bi-bell-slash
+                               fs-2 d-block mb-2"></i>
+
+                                    <small>
+                                        No notifications yet.
+                                    </small>
+
+                                </div>
 
                             <?php endif; ?>
 
@@ -300,18 +462,22 @@ if (
                         <div class="dropdown-divider m-0"></div>
 
 
+                        <!-- FOOTER -->
+
                         <a
-                            class="dropdown-item text-center py-3"
                             href="<?= url(
-                                'Notification',
-                                'index'
-                            ) ?>">
+                                        'Admin',
+                                        'notifications'
+                                    ) ?>"
+                            class="dropdown-item
+                   text-center
+                   py-3">
 
-                            View All Notifications
+                            <i class="bi bi-send me-1"></i>
 
-                            <i
-                                class="bi bi-arrow-right ms-1">
-                            </i>
+                            Manage Notifications
+
+                            <i class="bi bi-arrow-right ms-1"></i>
 
                         </a>
 
@@ -320,33 +486,26 @@ if (
                 </li>
 
 
+
                 <!-- =================================================
                      ADMIN PROFILE
                 ================================================== -->
 
                 <li class="nav-item dropdown ms-lg-2">
 
-                    <a
-                        class="nav-link dropdown-toggle d-flex
-                               align-items-center"
-                        href="#"
-                        role="button"
-                        data-bs-toggle="dropdown"
+                    <a class="nav-link dropdown-toggle d-flex
+                               align-items-center" href="#" role="button" data-bs-toggle="dropdown"
                         aria-expanded="false">
 
 
-                        <img
-                            src="<?= e($adminAvatar) ?>"
-                            alt="Admin"
-                            class="avatar-sm me-2">
+                        <img src="<?= e($adminAvatar) ?>" alt="Admin" class="avatar-sm me-2">
 
 
-                        <span
-                            class="d-none d-lg-inline fw-semibold">
+                        <span class="d-none d-lg-inline fw-semibold">
 
                             <?= e(
                                 $_SESSION['user_name']
-                                ?? 'Administrator'
+                                    ?? 'Administrator'
                             ) ?>
 
                         </span>
@@ -354,8 +513,7 @@ if (
                     </a>
 
 
-                    <ul
-                        class="dropdown-menu dropdown-menu-end
+                    <ul class="dropdown-menu dropdown-menu-end
                                shadow border-0 mt-2">
 
 
@@ -373,13 +531,12 @@ if (
 
                                     <?= e(
                                         $_SESSION['user_name']
-                                        ?? 'Administrator'
+                                            ?? 'Administrator'
                                     ) ?>
 
                                 </div>
 
-                                <span
-                                    class="badge bg-primary mt-1">
+                                <span class="badge bg-primary mt-1">
 
                                     Administrator
 
@@ -399,15 +556,12 @@ if (
 
                         <li>
 
-                            <a
-                                class="dropdown-item"
-                                href="<?= url(
-                                    'Admin',
-                                    'index'
-                                ) ?>">
+                            <a class="dropdown-item" href="<?= url(
+                                                                'Admin',
+                                                                'index'
+                                                            ) ?>">
 
-                                <i
-                                    class="bi bi-speedometer2 me-2">
+                                <i class="bi bi-speedometer2 me-2">
                                 </i>
 
                                 Admin Dashboard
@@ -421,15 +575,12 @@ if (
 
                         <li>
 
-                            <a
-                                class="dropdown-item"
-                                href="<?= url(
-                                    'Profile',
-                                    'index'
-                                ) ?>">
+                            <a class="dropdown-item" href="<?= url(
+                                                                'Profile',
+                                                                'index'
+                                                            ) ?>">
 
-                                <i
-                                    class="bi bi-person-circle me-2">
+                                <i class="bi bi-person-circle me-2">
                                 </i>
 
                                 My Profile
@@ -443,15 +594,12 @@ if (
 
                         <li>
 
-                            <a
-                                class="dropdown-item"
-                                href="<?= url(
-                                    'Dashboard',
-                                    'index'
-                                ) ?>">
+                            <a class="dropdown-item" href="<?= url(
+                                                                'Dashboard',
+                                                                'index'
+                                                            ) ?>">
 
-                                <i
-                                    class="bi bi-globe me-2">
+                                <i class="bi bi-globe me-2">
                                 </i>
 
                                 View Website
@@ -459,26 +607,32 @@ if (
                             </a>
 
                         </li>
-
+                        <!-- APP SETTINGS -->
+                        <li class="nav-item">
+                            <a
+                                class="nav-link"
+                                href="<?= url('Admin', 'settings') ?>">
+                                <i class="bi bi-gear me-1"></i>
+                                Settings
+                            </a>
+                        </li>
 
                         <li>
                             <hr class="dropdown-divider">
                         </li>
 
 
+
                         <!-- Logout -->
 
                         <li>
 
-                            <a
-                                class="dropdown-item text-danger"
-                                href="<?= url(
-                                    'Auth',
-                                    'logout'
-                                ) ?>">
+                            <a class="dropdown-item text-danger" href="<?= url(
+                                                                            'Auth',
+                                                                            'logout'
+                                                                        ) ?>">
 
-                                <i
-                                    class="bi bi-box-arrow-right me-2">
+                                <i class="bi bi-box-arrow-right me-2">
                                 </i>
 
                                 Logout

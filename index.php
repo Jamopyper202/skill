@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ============================================================================
  * SkillSwap - Front Controller (index.php)
@@ -18,6 +19,8 @@
 
 // Include the bootstrap file to initialize the application
 require_once __DIR__ . '/bootstrap.php';
+
+
 
 // ============================================================================
 // ROUTING SETUP
@@ -40,23 +43,19 @@ require_once __DIR__ . '/bootstrap.php';
  * - Admin       : Admin panel management
  * - Report      : User reporting system
  */
-$controller = isset($_GET['controller']) ? trim($_GET['controller']) : 'Auth';
-$controller = ucfirst(strtolower($controller)) . 'Controller';
 
-/**
- * Get the action (method) name from URL parameter or default to 'index'
- */
-$action = isset($_GET['action']) ? trim($_GET['action']) : 'login';
+$controller = isset($_GET['controller'])
+    ? trim($_GET['controller'])
+    : 'Auth';
 
-/**
- * Get additional parameters from URL
- */
-$params = [];
-foreach ($_GET as $key => $value) {
-    if ($key !== 'controller' && $key !== 'action') {
-        $params[$key] = sanitize($value);
-    }
-}
+$controller = ucfirst(
+    strtolower($controller)
+) . 'Controller';
+
+$action = isset($_GET['action'])
+    ? trim($_GET['action'])
+    : 'login';
+
 
 // ============================================================================
 // AJAX ROUTING
@@ -66,13 +65,13 @@ foreach ($_GET as $key => $value) {
  * Check if this is an AJAX request
  * AJAX requests are handled by files in the /ajax/ directory
  */
-$isAjax = !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && 
-          strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
+$isAjax = !empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
+    strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
 
 if ($isAjax) {
     // Build the AJAX handler file path
     $ajaxFile = BASE_PATH . '/ajax/' . strtolower(str_replace('Controller', '', $controller)) . '.php';
-    
+
     // Check if the AJAX handler exists
     if (file_exists($ajaxFile)) {
         // Include the AJAX handler and exit
@@ -91,35 +90,48 @@ if ($isAjax) {
 // ADMIN ROUTE PROTECTION
 // ============================================================================
 
-/**
- * List of controllers that require admin privileges
- */
+
 $adminControllers = [
     'AdminController'
 ];
 
-/**
- * Check if the requested controller is an admin controller
- */
-$isAdminRoute = in_array($controller, $adminControllers);
+$isAdminRoute = in_array(
+    $controller,
+    $adminControllers,
+    true
+);
 
-/**
- * If accessing admin route, verify admin authentication
- */
+
 if ($isAdminRoute) {
-    // Check if user is logged in
-    if (!isset($_SESSION['user_id'])) {
-        // Redirect to login page
-        flash('Please login to access the admin panel.', 'warning');
-        redirect('index.php?controller=Auth&action=login');
+
+    // Must be logged in
+    if (!isLoggedIn()) {
+
+        flash(
+            'Please login to access the admin panel.',
+            'warning'
+        );
+
+        redirect(
+            url('Auth', 'login')
+        );
+
         exit;
     }
 
-    // Check if user has admin role
-    if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
-        // Redirect to user dashboard with error
-        flash('You do not have permission to access the admin panel.', 'danger');
-        redirect('index.php?controller=Dashboard&action=index');
+
+    // Must be administrator
+    if (!isAdmin()) {
+
+        flash(
+            'You do not have permission to access the admin panel.',
+            'danger'
+        );
+
+        redirect(
+            url('Dashboard', 'index')
+        );
+
         exit;
     }
 }
@@ -158,7 +170,7 @@ if ($isProtectedRoute) {
     if (!isset($_SESSION['user_id'])) {
         // Save the intended URL for redirect after login
         $_SESSION['redirect_after_login'] = $_SERVER['REQUEST_URI'];
-        
+
         // Redirect to login page
         flash('Please login to access this page.', 'warning');
         redirect('index.php?controller=Auth&action=login');
@@ -180,33 +192,33 @@ if ($isProtectedRoute) {
 // ============================================================================
 
 try {
-    // Check if the controller class exists
+
     if (!class_exists($controller)) {
-        throw new Exception("Controller '$controller' not found.");
+        throw new Exception(
+            "Controller '$controller' not found."
+        );
     }
 
-    // Create an instance of the controller
     $controllerInstance = new $controller();
 
-    // Check if the action method exists in the controller
     if (!method_exists($controllerInstance, $action)) {
-        throw new Exception("Action '$action' not found in controller '$controller'.");
+        throw new Exception(
+            "Action '$action' not found in controller '$controller'."
+        );
     }
 
-    // Call the controller action with parameters
-    // Use call_user_func_array to pass parameters dynamically
-    // call_user_func_array([$controllerInstance, $action], $params);
-    call_user_func_array(
-    [$controllerInstance, $action],
-    array_values($params)
-);
-
+    call_user_func([
+        $controllerInstance,
+        $action
+    ]);
 } catch (Exception $e) {
-    // Log the error for debugging
-    error_log("Routing Error: " . $e->getMessage());
 
-    // Display 404 error page
+    error_log(
+        "Routing Error: " . $e->getMessage()
+    );
+
     http_response_code(404);
+
     render404($e->getMessage());
 }
 
@@ -220,10 +232,12 @@ try {
  * @param string $message Optional error message to display
  * @return void
  */
-function render404(string $message = ''): void {
-    ?>
+function render404(string $message = ''): void
+{
+?>
     <!DOCTYPE html>
     <html lang="en">
+
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -240,16 +254,19 @@ function render404(string $message = ''): void {
                 align-items: center;
                 justify-content: center;
             }
+
             .error-container {
                 text-align: center;
                 padding: 2rem;
             }
+
             .error-code {
                 font-size: 8rem;
                 font-weight: 700;
                 color: #0d6efd;
                 line-height: 1;
             }
+
             .error-icon {
                 font-size: 5rem;
                 color: #6c757d;
@@ -257,6 +274,7 @@ function render404(string $message = ''): void {
             }
         </style>
     </head>
+
     <body>
         <div class="container">
             <div class="row justify-content-center">
@@ -283,8 +301,9 @@ function render404(string $message = ''): void {
             </div>
         </div>
     </body>
+
     </html>
-    <?php
+<?php
     exit;
 }
 ?>

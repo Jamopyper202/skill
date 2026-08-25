@@ -1,71 +1,288 @@
-# views/admin/edit-skill.php
-edit_skill = '''<?php
+<?php
 /**
- * Admin Edit Skill View
+ * Admin Edit Category View
  */
-$title = 'Edit Skill';
+
+$title = 'Edit Category';
 $activeTab = 'admin';
+
+$categoryId = (int) ($category['id'] ?? 0);
+
+$categoryName = $category['name'] ?? '';
+
+$description = $category['description'] ?? '';
+
+$icon = $category['icon'] ?? 'bi-grid';
 ?>
+
 <?php require_once __DIR__ . '/../layouts/header.php'; ?>
-<?php require_once __DIR__ . '/../layouts/admin-navbar.php'; ?>
 
 <div class="container-fluid py-4">
-    <div class="row justify-content-center">
-        <div class="col-lg-6">
-            <nav aria-label="breadcrumb" class="mb-4">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
-                    <li class="breadcrumb-item"><a href="/admin/skills">Skills</a></li>
-                    <li class="breadcrumb-item active">Edit Skill</li>
-                </ol>
-            </nav>
 
-            <div class="card shadow border-0">
-                <div class="card-header bg-warning text-dark">
-                    <h2 class="h4 mb-0"><i class="fas fa-edit me-2"></i>Edit Skill</h2>
+    <!-- =========================================================
+         BREADCRUMB
+    ========================================================== -->
+
+    <nav aria-label="breadcrumb" class="mb-4">
+
+        <ol class="breadcrumb">
+
+            <li class="breadcrumb-item">
+
+                <a href="<?= url('Admin', 'index') ?>">
+                    Dashboard
+                </a>
+
+            </li>
+
+            <li class="breadcrumb-item">
+
+                <a href="<?= url('Admin', 'categories') ?>">
+                    Categories
+                </a>
+
+            </li>
+
+            <li class="breadcrumb-item active">
+                Edit Category
+            </li>
+
+        </ol>
+
+    </nav>
+
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-7 col-xl-6">
+
+            <div class="card shadow-sm border-0">
+
+                <!-- =================================================
+                     HEADER
+                ================================================== -->
+
+                <div class="card-header bg-warning text-dark py-3">
+
+                    <h2 class="h5 mb-0">
+
+                        <i class="bi bi-pencil-square me-2"></i>
+
+                        Edit Category
+
+                    </h2>
+
                 </div>
+
+
+                <!-- =================================================
+                     BODY
+                ================================================== -->
+
                 <div class="card-body p-4">
+
                     <?php require_once __DIR__ . '/../layouts/flash-messages.php'; ?>
 
-                    <form action="/admin/skills/edit/<?= $skill['id'] ?>" method="POST">
-                        <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
 
-                        <div class="mb-3">
-                            <label for="name" class="form-label fw-bold">Skill Name *</label>
-                            <input type="text" name="name" id="name" class="form-control" 
-                                value="<?= e($skill['name']) ?>" required maxlength="100">
+                    <?php if ($categoryId <= 0): ?>
+
+                        <div class="alert alert-danger">
+
+                            <i class="bi bi-exclamation-triangle me-2"></i>
+
+                            Invalid category.
+
                         </div>
 
-                        <div class="mb-3">
-                            <label for="category_id" class="form-label fw-bold">Category *</label>
-                            <select name="category_id" id="category_id" class="form-select" required>
-                                <option value="">-- Select Category --</option>
-                                <?php foreach ($categories ?? [] as $cat): ?>
-                                <option value="<?= $cat['id'] ?>" <?= ($skill['category_id'] ?? '') == $cat['id'] ? 'selected' : '' ?>>
-                                    <?= e($cat['name']) ?>
-                                </option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
+                    <?php else: ?>
 
-                        <div class="mb-3">
-                            <label for="description" class="form-label fw-bold">Description</label>
-                            <textarea name="description" id="description" rows="3" class="form-control" maxlength="500"><?= e($skill['description'] ?? '') ?></textarea>
-                        </div>
 
-                        <div class="d-flex justify-content-between">
-                            <a href="/admin/skills" class="btn btn-outline-secondary">
-                                <i class="fas fa-arrow-left me-1"></i>Cancel
-                            </a>
-                            <button type="submit" class="btn btn-warning btn-lg">
-                                <i class="fas fa-save me-2"></i>Update Skill
-                            </button>
-                        </div>
-                    </form>
+                        <form
+                            action="<?= url(
+                                'Admin',
+                                'editCategory',
+                                ['id' => $categoryId]
+                            ) ?>"
+                            method="POST"
+                        >
+
+                          
+
+
+                            <!-- Category ID -->
+
+                            <input
+                                type="hidden"
+                                name="id"
+                                value="<?= $categoryId ?>"
+                            >
+
+
+                            <!-- =================================================
+                                 CATEGORY NAME
+                            ================================================== -->
+
+                            <div class="mb-4">
+
+                                <label
+                                    for="name"
+                                    class="form-label fw-semibold"
+                                >
+                                    Category Name
+                                    <span class="text-danger">*</span>
+                                </label>
+
+                                <input
+                                    type="text"
+                                    name="name"
+                                    id="name"
+                                    class="form-control"
+                                    value="<?= e($categoryName) ?>"
+                                    required
+                                    maxlength="100"
+                                    placeholder="Enter category name"
+                                >
+
+                            </div>
+
+
+                            <!-- =================================================
+                                 DESCRIPTION
+                            ================================================== -->
+
+                            <div class="mb-4">
+
+                                <label
+                                    for="description"
+                                    class="form-label fw-semibold"
+                                >
+                                    Description
+                                </label>
+
+                                <textarea
+                                    name="description"
+                                    id="description"
+                                    rows="4"
+                                    class="form-control"
+                                    maxlength="500"
+                                    placeholder="Describe this category..."
+                                ><?= e($description) ?></textarea>
+
+                            </div>
+
+
+                            <!-- =================================================
+                                 ICON
+                            ================================================== -->
+
+                            <div class="mb-4">
+
+                                <label
+                                    for="icon"
+                                    class="form-label fw-semibold"
+                                >
+                                    Icon Class
+                                </label>
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text">
+
+                                        <i
+                                            class="bi <?= e($icon) ?>"
+                                            id="iconPreview"
+                                        ></i>
+
+                                    </span>
+
+                                    <input
+                                        type="text"
+                                        name="icon"
+                                        id="icon"
+                                        class="form-control"
+                                        value="<?= e($icon) ?>"
+                                        maxlength="50"
+                                        placeholder="e.g. bi-code-slash"
+                                    >
+
+                                </div>
+
+                                <div class="form-text">
+                                    Example:
+                                    <code>bi-code-slash</code>,
+                                    <code>bi-palette</code>,
+                                    <code>bi-laptop</code>
+                                </div>
+
+                            </div>
+
+
+                            <!-- =================================================
+                                 ACTIONS
+                            ================================================== -->
+
+                            <div
+                                class="d-flex
+                                       justify-content-between
+                                       align-items-center
+                                       gap-2"
+                            >
+
+                                <a
+                                    href="<?= url('Admin', 'categories') ?>"
+                                    class="btn btn-outline-secondary"
+                                >
+
+                                    <i class="bi bi-arrow-left me-1"></i>
+
+                                    Cancel
+
+                                </a>
+
+
+                                <button
+                                    type="submit"
+                                    class="btn btn-warning"
+                                >
+
+                                    <i class="bi bi-check-lg me-1"></i>
+
+                                    Update Category
+
+                                </button>
+
+                            </div>
+
+                        </form>
+
+                    <?php endif; ?>
+
                 </div>
+
             </div>
+
         </div>
+
     </div>
+
 </div>
+
+
+<script>
+const iconInput = document.getElementById('icon');
+const iconPreview = document.getElementById('iconPreview');
+
+if (iconInput && iconPreview) {
+
+    iconInput.addEventListener('input', function () {
+
+        iconPreview.className =
+            'bi ' + this.value.trim();
+
+    });
+
+}
+</script>
+
 
 <?php require_once __DIR__ . '/../layouts/footer.php'; ?>
